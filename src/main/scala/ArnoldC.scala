@@ -2,7 +2,7 @@ package com.example.assign5
 
 
 class ArnoldC {
-
+// IT'S ARNOLDC MOTHAFUCAS
   object ITS {
     // globals
 //    def SHOWTIME(start: Any): start.type = {
