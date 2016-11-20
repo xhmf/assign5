@@ -14,9 +14,9 @@ class ArnoldCSpec extends FunSpec {
   {
     object DoesItCompile extends ArnoldC {
       def run(): Unit = {
-        //ITS SHOWTIME
+//        ITS SHOWTIME
           TALK TO THE HAND "hello world"
-        //YOU HAVE BEEN TERMINATED
+//        YOU HAVE BEEN TERMINATED
       }
     }
     DoesItCompile.run()

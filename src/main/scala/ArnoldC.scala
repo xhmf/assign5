@@ -2,37 +2,47 @@ package com.example.assign5
 
 
 class ArnoldC {
-  def main(args: Array[String]) {
-    println("Hello World!!!")
-  }
 
   object ITS {
-  }
-
-  object TALK {
-    def apply(to: To ): To = {
-      return to
+    // globals
+//    def SHOWTIME(start: Any): start.type = {
+//      return start
+//    }
+//    def SHOWTIME {}
+    def apply(showtime: Showtime): Unit = {
     }
   }
 
-  class To
-  object TO extends To{
-    def apply(the: The ): The = {
+  class Showtime
+  object SHOWTIME extends Showtime
+
+  trait Talk {
+    def TO(the: The): The = {
       return the
     }
   }
+  object TALK extends Talk
 
-  class The
-  object THE extends The {
-    def apply(hand: Hand ): Hand = {
-      hand
+  class The {
+    def HAND(): Hand = {
+      return HAND
+    }
+    def HAND(text:String): Unit = {
+      println(text)
     }
   }
+  object THE extends The
 
   class Hand
-   object HAND extends Hand{
-     def apply(text: String): Unit = {
-       println(text)
-     }
-   }
+  object HAND extends Hand {
+    def apply(text: String): Unit = {
+      println(text)
+    }
+  }
+}
+
+object Arnold extends ArnoldC {
+  def main(args: Array[String]): Unit = {
+    TALK TO THE HAND "Hello world"
+  }
 }
