@@ -207,7 +207,6 @@ class ArnoldC {
   object INVITATION extends Z
 
   object CHILL extends Z
-
 }
 
 object Arnold extends ArnoldC {
