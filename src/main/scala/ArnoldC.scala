@@ -2,21 +2,9 @@ package com.example.assign5
 
 
 class ArnoldC {
+  var start: Boolean = false
 
-  object ITS {
-    // globals
-//    def SHOWTIME(start: Any): start.type = {
-//      return start
-//    }
-//    def SHOWTIME {}
-    def apply(showtime: Showtime): Unit = {
-    }
-  }
-
-  class Showtime
-  object SHOWTIME extends Showtime
-
-  trait Talk {
+  class Talk {
     def TO(the: The): The = {
       return the
     }
@@ -24,21 +12,29 @@ class ArnoldC {
   object TALK extends Talk
 
   class The {
-    def HAND(): Hand = {
-      return HAND
-    }
+//    def HAND(): Hand = {
+//      return HAND
+//    }
     def HAND(text:String): Unit = {
       println(text)
     }
   }
   object THE extends The
 
-  class Hand
-  object HAND extends Hand {
-    def apply(text: String): Unit = {
-      println(text)
+//  class Hand
+//  object HAND extends Hand {
+//    def apply(text: String): Unit = {
+//      println(text)
+//    }
+//  }
+
+
+  class Its {
+    def SHOWTIME() = {
+      start = true
     }
   }
+  object ITS extends Its
 }
 
 object Arnold extends ArnoldC {
