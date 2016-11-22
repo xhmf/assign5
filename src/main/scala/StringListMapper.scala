@@ -30,7 +30,7 @@ class StringListMapper {
     "HASTA LA VISTA BABY" -> "endmethod",
     "DO IT NOW" -> "callmethod",
     "GET YOUR ASS TO MARS" -> "assignvariablefrommethodcall",
-    "HEY CHRISTAS TREE" -> "declareint",
+    "HEY CHRISTMAS TREE" -> "declareint",
     "YOU SET US UP" -> "setinitialvalue",
     "ITS SHOWTIME" -> "beginmain",
     "YOU HAVE BEEN TERMINATED" -> "endmain",
@@ -40,6 +40,7 @@ class StringListMapper {
     "ENOUGH TALK" -> "endassignvariable"
   )
 
+  //TODO: Catch future variable names and numbers through some identifier. Ask Larry.
   def getSequence(string: String) : ArrayBuffer[String] = {
     var stringCopy = string
     var list = ArrayBuffer[String]()

@@ -48,7 +48,6 @@ class ArnoldCSpec extends FunSpec {
     Asdfasdf.run()
   }
 
-  //TODO: debug
   describe("should run fine")
   {
     object Asdfasdf extends StringListMapper {
