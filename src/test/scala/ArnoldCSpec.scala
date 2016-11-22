@@ -24,7 +24,7 @@ class ArnoldCSpec extends FunSpec {
 
   describe("should run fine")
   {
-    object Asdfasdf extends StringList {
+    object Asdfasdf extends StringListMapper {
       def run(): Unit = {
         var list = StringListInstance.getSequence("TALK TO THE HAND ITS SHOWTIME")
         for(i <- list) {
@@ -37,7 +37,7 @@ class ArnoldCSpec extends FunSpec {
 
   describe("should run fine")
   {
-    object Asdfasdf extends StringList {
+    object Asdfasdf extends StringListMapper {
       def run(): Unit = {
         var list = StringListInstance.getSequence("TALK TO THE HAND \"potato asdf\" ITS SHOWTIME")
         for(i <- list) {
@@ -51,7 +51,7 @@ class ArnoldCSpec extends FunSpec {
   //TODO: debug
   describe("should run fine")
   {
-    object Asdfasdf extends StringList {
+    object Asdfasdf extends StringListMapper {
       def run(): Unit = {
         var list = StringListInstance.getSequence("TALK TO THE HAND \"potato asdf\" ITS SHOWTIME 123 GET DOWN 1")
         for(i <- list) {

@@ -1,4 +1,4 @@
-package AST
+package com.example.assign5
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -8,8 +8,6 @@ import scala.collection.mutable.ArrayBuffer
 abstract class Node {
   var identification : String
   var nodeChildren : ArrayBuffer[Node]
-
-
 }
 abstract class False extends Node{
   identification = "false"
