@@ -7,993 +7,430 @@ class ArnoldKeyword {
 
   def addString(text: String) = {}
 
-  def BE(param: ArnoldKeyword): ArnoldKeyword = {
+  def apply(sym: Symbol): ArnoldKeyword = {
+    this.addString(sym.name)
+    this
+  }
+
+  def arnoldParam(param: String): ArnoldKeyword = {
     if (this.ended) {
       this.ended = false
       this.addString(this.getName())
     }
-    this.addString("BE")
-    this.addString(param.getName())
+    this.addString(Thread.currentThread.getStackTrace()(2).getMethodName)
+    this.addString(param)
     this
+  }
+
+  def otherParam(param: String, surround: String): ArnoldKeyword = {
+    if (this.ended) {
+      this.ended = false
+      this.addString(this.getName())
+    }
+    this.addString(Thread.currentThread.getStackTrace()(3).getMethodName)
+    this.addString(surround + param + surround)
+    this.ended = true // True because if the param is scalar the "method param" chain ends
+    this
+  }
+
+  def symbolParam(param: String): ArnoldKeyword = {
+    otherParam(param, "'")
+  }
+
+  def stringParam(param: String): ArnoldKeyword = {
+    otherParam(param, "\"")
+  }
+
+  def intParam(param: String): ArnoldKeyword = {
+    otherParam(param, "")
+  }
+
+  def BE(param: ArnoldKeyword): ArnoldKeyword = {
+    this.arnoldParam(param.getName())
   }
 
   def THAT(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("THAT")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def BACK(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("BACK")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def WANT(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("WANT")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def STEAM(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("STEAM")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def FIRED(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("FIRED")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def PEOPLE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("PEOPLE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def SAY(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("SAY")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def BUNCH(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("BUNCH")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def OFF(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("OFF")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def CONSIDER(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("CONSIDER")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HAD(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HAD")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HAND(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HAND")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HAND(param: String): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HAND")
-    this.addString("\"" + param + "\"")
-    this
+    this.stringParam(param)
   }
 
   def GO(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("GO")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def THE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("THE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def CLOTHES(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("CLOTHES")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def BECAUSE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("BECAUSE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def OF(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("OF")
-    this.addString(param.getName())
-    this
-  }
-
-  def TREE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("TREE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def BOOTS(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("BOOTS")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def STICK(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("STICK")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def RESPECT(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("RESPECT")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def IM(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("IM")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HAVE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HAVE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def SOME(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("SOME")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def DOWN(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("DOWN")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def GOING(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("GOING")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def WHAT(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("WHAT")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def FOR(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("FOR")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def GET(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("GET")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def I(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("I")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def DIVORCE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("DIVORCE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def CAREFULLY(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("CAREFULLY")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def ASS(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("ASS")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def AROUND(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("AROUND")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def LIED(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("LIED")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def SHOWTIME(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("SHOWTIME")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def KNOCK(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("KNOCK")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def BABY(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("BABY")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
-  def CHRISTMAS(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("CHRISTMAS")
-    this.addString(param.getName())
-    this
+  def CHRISTMAS_TREE(param: Symbol): ArnoldKeyword = {
+    this.symbolParam(param.name)
   }
 
   def AND(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("AND")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def UP(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("UP")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def US(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("US")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def NOT(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("NOT")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def NOW(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("NOW")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def MY(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("MY")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def LISTEN(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("LISTEN")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def YOURE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("YOURE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def THEM(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("THEM")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def GIVE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("GIVE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def THESE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("THESE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def FUCK(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("FUCK")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def PROBLEMO(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("PROBLEMO")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def MOTORCYCLE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("MOTORCYCLE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def ILL(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("ILL")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def SET(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("SET")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def NO(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("NO")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def ASK(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("ASK")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def TALK(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("TALK")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def ME(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("ME")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HEY(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HEY")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HERE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HERE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HASTA(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HASTA")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def NEED(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("NEED")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def BULLSHIT(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("BULLSHIT")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def PLEASE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("PLEASE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def ANSWERED(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("ANSWERED")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def WRONG(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("WRONG")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def LET(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("LET")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def CHOPPER(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("CHOPPER")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def MARS(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("MARS")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def IMMEDIATELY(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("IMMEDIATELY")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def DO(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("DO")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def DID(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("DID")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def AIR(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("AIR")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def BEEN(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("BEEN")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def LOGIC(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("LOGIC")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def YOUR(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("YOUR")
-    this.addString(param.getName())
-    this
-  }
-
-  def TERMINATED(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("TERMINATED")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def TERMINATED(): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("TERMINATED")
-    this
+    this.arnoldParam("")
   }
 
   def LA(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("LA")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def BENNET(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("BENNET")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def TO(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("TO")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def QUESTIONS(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("QUESTIONS")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def HIM(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("HIM")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def VISTA(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("VISTA")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def A(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("A")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def VERY(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("VERY")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def ITS(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("ITS")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def IS(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("IS")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def IT(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("IT")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def SPLIT(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("SPLIT")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def YOU(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("YOU")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def ENOUGH(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("ENOUGH")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def ARE(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("ARE")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def INVITATION(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("INVITATION")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
   def CHILL(param: ArnoldKeyword): ArnoldKeyword = {
-    if (this.ended) {
-      this.ended = false
-      this.addString(this.getName())
-    }
-    this.addString("CHILL")
-    this.addString(param.getName())
-    this
+    this.arnoldParam(param.getName())
   }
 
 

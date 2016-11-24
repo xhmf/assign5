@@ -213,6 +213,7 @@ object Arnold extends ArnoldC {
   def main(args: Array[String]): Unit = {
     ITS SHOWTIME
       TALK TO THE HAND "hello world"
+      HEY CHRISTMAS_TREE 'prev
     YOU HAVE BEEN TERMINATED;
     println(text)
   }
