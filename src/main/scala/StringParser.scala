@@ -37,16 +37,16 @@ class StringParser {
         This means that plus, minus, etc. should all be absorbed by setvalue and this statement should
         never get hit for any of these cases, besides the last 4.
         */
-      case "methodargs"
-          // | plus
-          // | "minus"
-          // | "multiply"
-          // | "divide"
-          // | "mod"
-          // | "equals"
-          // | "greaterthan"
-          // | "or"
-          // | "and"
+      case "plus"
+           | "minus"
+           | "multiply"
+           | "divide"
+           | "mod"
+           | "equals"
+           | "greaterthan"
+           | "or"
+           | "and"
+           | "methodargs"
            | "return"
            | "callmethod"
            | "setinitialvalue" => {
@@ -147,6 +147,7 @@ class StringParser {
       }
       //Two nodes! What to print and the AST
       case "print" => {
+        println("Should reach")
         node.nodeChildren += createNode(givenList.remove(0))
         node.nodeChildren += recur(breakCode)
         return node
@@ -165,6 +166,7 @@ class StringParser {
         hit the breakCode, aka endassignvariable
        */
       case "setvalue" => {
+        println("Given list before setvalue does its shit")
         //First node is the first variable that we start with
         node.nodeChildren += createNode(givenList.remove(0))
         //This part is essentially a "fold" operation
