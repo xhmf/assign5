@@ -37,16 +37,16 @@ class StringParser {
         This means that plus, minus, etc. should all be absorbed by setvalue and this statement should
         never get hit for any of these cases, besides the last 4.
         */
-      case "plus"
-           | "minus"
-           | "multiply"
-           | "divide"
-           | "mod"
-           | "equals"
-           | "greaterthan"
-           | "or"
-           | "and"
-           | "methodargs"
+      case "methodargs"
+          // | plus
+          // | "minus"
+          // | "multiply"
+          // | "divide"
+          // | "mod"
+          // | "equals"
+          // | "greaterthan"
+          // | "or"
+          // | "and"
            | "return"
            | "callmethod"
            | "setinitialvalue" => {
