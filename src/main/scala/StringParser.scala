@@ -147,7 +147,6 @@ class StringParser {
       }
       //Two nodes! What to print and the AST
       case "print" => {
-        println("Should reach")
         node.nodeChildren += createNode(givenList.remove(0))
         node.nodeChildren += recur(breakCode)
         return node
@@ -166,7 +165,6 @@ class StringParser {
         hit the breakCode, aka endassignvariable
        */
       case "setvalue" => {
-        println("Given list before setvalue does its shit")
         //First node is the first variable that we start with
         node.nodeChildren += createNode(givenList.remove(0))
         //This part is essentially a "fold" operation
