@@ -6,7 +6,13 @@ package com.example.assign5
 
 import scala.collection.mutable.ArrayBuffer
 
-class StringParser {
+trait has_args{
+  // This stores a map of method names to the number of arguments
+  // yes, arnoldC does in fact support multple arguments
+  val argument_function = scala.collection.mutable.HashMap.empty[String,Int]
+}
+
+class StringParser extends has_args{
   var givenList:ArrayBuffer[String] = new ArrayBuffer[String]
   def parseStringIntoAST(string: String): Node = {
     givenList = StringListInstance.getSequence(string)
@@ -48,7 +54,8 @@ class StringParser {
            | "and"
            | "methodargs"
            | "return"
-           | "callmethod"
+        //this was causing all sorts of problems
+        //   | "callmethod"
            | "setinitialvalue" => {
         node.nodeChildren += createNode(givenList.remove(0))
         return node
@@ -87,11 +94,29 @@ class StringParser {
           If we want to push the return statement up to the function level,
           I can easily change that later.
        */
-      case "declaremethod" | "nonvoidmethod" => {
+
+      // nonvoidmethod can't be used like declaremethod
+      case "declaremethod" => {
         //Add method name
-        node.nodeChildren += createNode(givenList.remove(0))
+
+        val methodname = givenList.remove(0)
+        node.nodeChildren += createNode(methodname)
         //If arguments is at the top of the stack
-        if(givenList(0).equals("methodargs")) {
+        argument_function(methodname) = 0
+        //There's the possibity of multiple arguments, but each is preceeded by methodargs
+        while(givenList(0).equals("methodargs")) {
+          println(methodname + " Has Args")
+          //remove methodargs because we don't need that on the stack
+          givenList.remove(0)
+          node.nodeChildren += createNode(givenList.remove(0))
+          argument_function(methodname) = argument_function(methodname) + 1
+        }
+
+
+        // println("MARkED:" + argument_function.keys)
+
+        // if this is a nonvoid method, we'll note that before the function body
+        if(givenList(0).equals("nonvoidmethod")){
           node.nodeChildren += createNode(givenList.remove(0))
         }
         //If body is at the top of the stack
@@ -120,8 +145,13 @@ class StringParser {
       //callmethod has 2 nodes - method name, [non-optional] method param
       //(rest of the tree is included in whatever calls this function)
       case "callmethod" => {
+        val methodname = givenList(0)
         node.nodeChildren += createNode(givenList.remove(0))
-        node.nodeChildren += createNode(givenList.remove(0))
+        var method_arg_number = argument_function(methodname)
+        while(method_arg_number > 0){
+          node.nodeChildren += createNode(givenList.remove(0))
+          method_arg_number -= 1
+        }
         return node
       }
       //assignvariablefrommethodcall will have three args - variable name, func call, rest of AST
@@ -188,7 +218,7 @@ class StringParser {
       //Uhoh!! Should never reach here!!
       case _ => {
         //All leaf nodes should be caught by one of the other methods :PPPP
-        throw new Exception("YOU MESSED UP SOMEWHERE IN YOUR CODE GO BACK AND CHECK EVERYTHING")
+        throw new Exception("Could not parse :: "+currOp)
       }
     }
   }

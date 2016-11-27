@@ -37,6 +37,25 @@ class StringParserTest extends FunSpec {
       }
       StringParserTestObject.run()
     }
+
+  describe("should run fine")
+  {
+    object StringParserTestObject extends StringParser {
+      def run(): Unit = {
+        val node:Node =
+          parseStringIntoAST("LISTEN TO ME VERY CAREFULLY \"notakeyword\"" +
+           "I NEED YOUR CLOTHES YOUR BOOTS AND YOUR MOTORCYCLE \"arg1\"" +
+            "I NEED YOUR CLOTHES YOUR BOOTS AND YOUR MOTORCYCLE \"arg2\"" +
+            "GIVE THESE PEOPLE AIR" +
+            "HASTA LA VISTA BABY" + "ITS SHOWTIME"+
+            "GET YOUR ASS TO MARS \"result1\"" +
+            "DO IT NOW \"notakeyword\" \"9\" \"4\"" +
+            "YOU HAVE BEEN TERMINATED")
+        printNodeNicely(node, 0)
+      }
+    }
+    StringParserTestObject.run()
+  }
   def printNodeNicely(node:Node, depth:Int): Unit = {
     var depthInDashes:String = new String
     for(i <- 0 to depth) {
