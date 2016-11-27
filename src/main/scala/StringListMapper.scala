@@ -40,7 +40,7 @@ class StringListMapper {
     "ENOUGH TALK" -> "endassignvariable"
   )
 
-  //TODO: Catch future variable names and numbers through some identifier. Ask Larry.
+
   def getSequence(string: String) : ArrayBuffer[String] = {
     var stringCopy = string
     var list = ArrayBuffer[String]()
@@ -48,17 +48,17 @@ class StringListMapper {
     while(stringCopy.length > 0 && characterDetected) {
       characterDetected = false
       //Check quotations
-      if(stringCopy.charAt(0) == '"') {
+      if(stringCopy.charAt(0) == '\'') {
         var stringBuilder = new StringBuilder
         if(stringCopy.length == 0) {
           throw new Exception("your code is shit")
         }
         stringCopy = stringCopy.substring(1)
-        var pos:Int = stringCopy.indexOf('"')
+        var pos:Int = stringCopy.indexOf('\'')
         if(pos == -1) {
           throw new Exception("your code is shit")
         }
-        stringBuilder += ('"')
+        stringBuilder += ('\'')
         stringBuilder ++= (stringCopy.substring(0,pos+1))
         stringCopy = stringCopy.substring(pos+1).trim
         list.+=(stringBuilder.toString)

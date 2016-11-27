@@ -10,7 +10,7 @@ class StringParserTest extends FunSpec {
       object StringParserTestObject extends StringParser {
         def run(): Unit = {
           val node:Node =
-            parseStringIntoAST("ITS SHOWTIME TALK TO THE HAND \"fried rice\" YOU HAVE BEEN TERMINATED")
+            parseStringIntoAST("ITS SHOWTIME TALK TO THE HAND \'fried rice\' YOU HAVE BEEN TERMINATED")
           printNodeNicely(node, 0)
         }
       }
@@ -23,14 +23,14 @@ class StringParserTest extends FunSpec {
         def run(): Unit = {
           val node:Node =
             parseStringIntoAST("ITS SHOWTIME " +
-              "HEY CHRISTMAS TREE \"var\" " +
+              "HEY CHRISTMAS TREE \'var\' " +
               "YOU SET US UP I LIED " +
-              "GET TO THE CHOPPER \"var\" " +
+              "GET TO THE CHOPPER \'var\' " +
               "HERE IS MY INVITATION I LIED " +
               "CONSIDER THAT A DIVORCE NO PROBLEMO " +
               "KNOCK KNOCK I LIED " +
               "ENOUGH TALK " +
-              "TALK TO THE HAND \"var\" " +
+              "TALK TO THE HAND \'var\' " +
               "YOU HAVE BEEN TERMINATED ")
           printNodeNicely(node, 0)
         }
@@ -43,13 +43,13 @@ class StringParserTest extends FunSpec {
     object StringParserTestObject extends StringParser {
       def run(): Unit = {
         val node:Node =
-          parseStringIntoAST("LISTEN TO ME VERY CAREFULLY \"notakeyword\"" +
-           "I NEED YOUR CLOTHES YOUR BOOTS AND YOUR MOTORCYCLE \"arg1\"" +
-            "I NEED YOUR CLOTHES YOUR BOOTS AND YOUR MOTORCYCLE \"arg2\"" +
+          parseStringIntoAST("LISTEN TO ME VERY CAREFULLY \'notakeyword\'" +
+           "I NEED YOUR CLOTHES YOUR BOOTS AND YOUR MOTORCYCLE \'arg1\'" +
+            "I NEED YOUR CLOTHES YOUR BOOTS AND YOUR MOTORCYCLE \'arg2\'" +
             "GIVE THESE PEOPLE AIR" +
             "HASTA LA VISTA BABY" + "ITS SHOWTIME"+
-            "GET YOUR ASS TO MARS \"result1\"" +
-            "DO IT NOW \"notakeyword\" \"9\" \"4\"" +
+            "GET YOUR ASS TO MARS \'result1\'" +
+            "DO IT NOW \'notakeyword\' \'9\' \'4\'" +
             "YOU HAVE BEEN TERMINATED")
         printNodeNicely(node, 0)
       }
