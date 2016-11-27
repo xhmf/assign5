@@ -105,7 +105,7 @@ class StringParser extends has_args{
         argument_function(methodname) = 0
         //There's the possibity of multiple arguments, but each is preceeded by methodargs
         while(givenList(0).equals("methodargs")) {
-          println(methodname + " Has Args")
+          //println(methodname + " Has Args")
           //remove methodargs because we don't need that on the stack
           givenList.remove(0)
           node.nodeChildren += createNode(givenList.remove(0))
@@ -177,7 +177,7 @@ class StringParser extends has_args{
       }
       //Two nodes! What to print and the AST
       case "print" => {
-        println("Should reach")
+        //println("Should reach")
         node.nodeChildren += createNode(givenList.remove(0))
         node.nodeChildren += recur(breakCode)
         return node
@@ -196,7 +196,7 @@ class StringParser extends has_args{
         hit the breakCode, aka endassignvariable
        */
       case "setvalue" => {
-        println("Given list before setvalue does its shit")
+        //println("Given list before setvalue does its shit")
         //First node is the first variable that we start with
         node.nodeChildren += createNode(givenList.remove(0))
         //This part is essentially a "fold" operation
