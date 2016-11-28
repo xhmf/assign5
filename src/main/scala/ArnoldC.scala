@@ -13,7 +13,7 @@ class ArnoldC {
 
     override def getName(): String = this.getClass.getName.split("\\$")(1)
 
-    override def run(): Unit = {
+    override def parse(): Unit = {
       println(text)
       object StringParserInstance extends StringParser
       var node:Node = StringParserInstance.parseStringIntoAST(text)
