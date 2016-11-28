@@ -99,3 +99,6 @@ abstract class SetValue extends Node{
 abstract class EndAssignVariable extends Node {
   identification = "endassignvariable"
 }
+abstract class Arguments extends Node {
+  identification = "arguments"
+}

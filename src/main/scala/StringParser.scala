@@ -143,12 +143,13 @@ class StringParser extends has_args{
         later, but for now the naive solution assumes that everything will have a parameter.
         */
       //TODO: implement sets to determine whether or not there is an arg
-      //callmethod has 2 nodes - method name, [non-optional] method param
-      //(rest of the tree is included in whatever calls this function)
+      //callmethod has 3 nodes - method name, arguments, rest of the tree
+        //arguments contains 0 or more arguments as children
       case "callmethod" => {
         val methodname = givenList(0)
         node.nodeChildren += createNode(givenList.remove(0))
         var method_arg_number = argument_function(methodname)
+        node.nodeChildren += createNode("args")
         while(method_arg_number > 0){
           node.nodeChildren += createNode(givenList.remove(0))
           method_arg_number -= 1
