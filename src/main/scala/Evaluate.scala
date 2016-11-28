@@ -3,7 +3,15 @@
   */
 package com.example.assign5
 
-class Evaluate {
+trait program_stack {
+  val program_bool = scala.collection.mutable.HashMap.empty[String,Boolean]
+  val function_bool = scala.collection.mutable.HashMap.empty[String,Boolean]
+
+  val program_int = scala.collection.mutable.HashMap.empty[String,Int]
+  val function_int = scala.collection.mutable.HashMap.empty[String,Int]
+}
+
+class Evaluate extends program_stack {
   def recur(node:Node){
     node.identification match {
       /*All nodes with exactly one child which will NOT continue the AST any further
@@ -55,19 +63,8 @@ class Evaluate {
         declaremethod(node)
         return node
       }
-      /* ASSUMES THAT EVERYTHING HAS A PARAMETER FOR NOW
-        Calling a method is messy. We don't know if there will be a parameter during the call or not,
-        and I can't think of a way of checking for one intuitively. One solution I have is that since
-        we're forcing methods to be initialized before they're called, we can store two sets as we're
-        parsing our code (so before we evaluate it) - one set with the methods that have a single
-        parameter (so we can parse out the parameter from the list) and one set with methods that don't
-        have the parameter (so we move on with our lives). This way, by the time we call the method in
-        our parse function (where we're at right now) we can check the resulting string against the two
-        sets and determine whether or not the function has an argument. I might do this implementation
-        later, but for now the naive solution assumes that everything will have a parameter.
-        */
-      //callmethod has 2 nodes - method name, [non-optional] method param
-      //(rest of the tree is included in whatever calls this function)
+      // callmethod will have 3 children, the method name, "arguments", and the rest of the AST
+      // "arguments" will have n number of children representing the corresponding n arguments of the tree
       case "callmethod" => {
         callmethod(node)
         return node
@@ -133,9 +130,6 @@ class Evaluate {
   def whilecase(node:Node): Unit = {
 
   }
-  def declareint(node:Node): Unit = {
-
-  }
   def declaremethod(node:Node): Unit = {
 
   }
@@ -152,7 +146,7 @@ class Evaluate {
 
   }
   def printto(node:Node): Unit = {
-
+      node.nodeChildren[]
   }
   def assignvariable(node:Node): Unit = {
 
