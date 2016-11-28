@@ -17,7 +17,8 @@ class ArnoldC {
       println(text)
       object StringParserInstance extends StringParser
       var node:Node = StringParserInstance.parseStringIntoAST(text)
-      PrintNodeObject.printNodeNicely(node, 0)
+      //PrintNodeObject.printNodeNicely(node, 0)
+      evaluate_object.recur(node)
     };
   }
 

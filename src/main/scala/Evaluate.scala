@@ -104,10 +104,13 @@ class Evaluate extends program_stack {
         setvalue(node)
          return node
       }
+      case "endmain" => {
+        println()
+      }
       //Uhoh!! Should never reach here!!
       case _ => {
         //All leaf nodes should be caught by one of the other methods :PPPP
-        throw new Exception("Could not parse :: "+node.identification)
+        throw new Exception("Spotted unexpected token:: "+node.identification)
       }
     }
   }
@@ -143,10 +146,11 @@ class Evaluate extends program_stack {
 
   }
   def beginmain(node:Node): Unit = {
-
+      recur(node.nodeChildren(0))
   }
   def printto(node:Node): Unit = {
-      node.nodeChildren[]
+      println(node.nodeChildren(0).identification)
+      recur(node.nodeChildren(1))
   }
   def assignvariable(node:Node): Unit = {
 
@@ -155,3 +159,4 @@ class Evaluate extends program_stack {
 
   }
 }
+object evaluate_object extends Evaluate

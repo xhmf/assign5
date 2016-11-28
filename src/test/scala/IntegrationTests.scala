@@ -5,6 +5,22 @@ import org.scalatest.FunSpec
   * Created by lyee on 11/27/16.
   */
 class IntegrationTests extends FunSpec {
+
+  describe("can we print") {
+    object eval_print extends ArnoldC {
+      def run(): Unit = {
+        println("Something should print here")
+        ITS SHOWTIME
+        TALK TO THE HAND "hello world"
+        YOU HAVE BEEN TERMINATED;
+        println("Something should have printed above")
+      }
+    }
+    eval_print.run()
+
+  }
+
+
   describe("should run fine") {
     object ExtensiveTestCase extends ArnoldC {
       def run(): Unit = {
@@ -82,4 +98,5 @@ class IntegrationTests extends FunSpec {
     ExtensiveTestCase.run()
 
   }
+
 }
