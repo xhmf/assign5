@@ -4,6 +4,7 @@
 
 package com.example.assign5
 
+import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.ArrayBuffer
 
 trait has_args{
@@ -13,7 +14,7 @@ trait has_args{
 }
 
 class StringParser extends has_args{
-  var givenList:ArrayBuffer[String] = new ArrayBuffer[String]
+  var givenList:ListBuffer[String] = new ListBuffer[String]
   def parseStringIntoAST(string: String): Node = {
     givenList = StringListInstance.getSequence(string)
     recur("endmain")

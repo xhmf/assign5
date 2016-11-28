@@ -1,29 +1,14 @@
-package arnold
-
-import com.example.assign5._
+import com.example.assign5.ArnoldC
 import org.scalatest.FunSpec
 
-class ArnoldCSpec extends FunSpec {
-  describe("Adding 1 to 1") {
-    it("should equals 2"){
-      assert(1+1 == 2)
-    }
-  }
-
-  describe("should run fine")
-  {
-    object DoesItCompile extends ArnoldC {
-      def run(): Unit = {
-        ITS SHOWTIME
-          TALK TO THE HAND "hello world"
-        YOU HAVE BEEN TERMINATED
-      }
-    }
-    DoesItCompile.run()
-  }
+/**
+  * Created by lyee on 11/27/16.
+  */
+class IntegrationTests extends FunSpec {
   describe("should run fine") {
     object ExtensiveTestCase extends ArnoldC {
       def run(): Unit = {
+
         ITS SHOWTIME
           TALK TO THE HAND "hello world"
         TALK TO THE HAND 'myvar
@@ -89,9 +74,12 @@ class ArnoldCSpec extends FunSpec {
         ENOUGH TALK
           CHILL
         YOU HAVE BEEN TERMINATED
+
+
+
       }
     }
     ExtensiveTestCase.run()
+
   }
 }
-
