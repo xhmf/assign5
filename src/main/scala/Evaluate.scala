@@ -4,15 +4,15 @@
 package com.example.assign5
 
 trait program_stack {
-  val program_bool = scala.collection.mutable.HashMap.empty[String,Boolean]
-  val function_bool = scala.collection.mutable.HashMap.empty[String,Boolean]
+  val program_bool = scala.collection.mutable.HashMap.empty[String, Boolean]
+  val function_bool = scala.collection.mutable.HashMap.empty[String, Boolean]
 
-  val program_int = scala.collection.mutable.HashMap.empty[String,Int]
-  val function_int = scala.collection.mutable.HashMap.empty[String,Int]
+  val program_int = scala.collection.mutable.HashMap.empty[String, Int]
+  val function_int = scala.collection.mutable.HashMap.empty[String, Int]
 }
 
 class Evaluate extends program_stack {
-  def recur(node:Node){
+  def recur(node: Node) {
     node.identification match {
       /*All nodes with exactly one child which will NOT continue the AST any further
         Aditionally, I just changed the structure of "setvalue" so that it will be completely flat.
@@ -110,52 +110,71 @@ class Evaluate extends program_stack {
       //Uhoh!! Should never reach here!!
       case _ => {
         //All leaf nodes should be caught by one of the other methods :PPPP
-        throw new Exception("Spotted unexpected token:: "+node.identification)
+        throw new Exception("Spotted unexpected token:: " + node.identification)
       }
     }
   }
 
-  def equalsto(node:Node): Unit = {
+  def equalsto(node: Node): Unit = {
 
   }
-  def greaterthan(node:Node): Unit = {
+
+  def greaterthan(node: Node): Unit = {
 
   }
-  def returnto(node:Node): Unit = {
+
+  def returnto(node: Node): Unit = {
 
   }
-  def setinitialvalue(node:Node): Unit = {
+
+  def setinitialvalue(node: Node): Unit = {
 
   }
-  def ifcase(node:Node): Unit = {
+
+  def ifcase(node: Node): Unit = {
 
   }
-  def whilecase(node:Node): Unit = {
+
+  def whilecase(node: Node): Unit = {
 
   }
-  def declaremethod(node:Node): Unit = {
+
+  def declaremethod(node: Node): Unit = {
 
   }
-  def callmethod(node:Node): Unit = {
+
+  def callmethod(node: Node): Unit = {
 
   }
-  def assignvariablefrommethodcall(node:Node): Unit = {
+
+  def assignvariablefrommethodcall(node: Node): Unit = {
 
   }
-  def declareint(node:Node): Unit = {
+
+  def declareint(node: Node): Unit = {
 
   }
-  def beginmain(node:Node): Unit = {
-      recur(node.nodeChildren(0))
-  }
-  def printto(node:Node): Unit = {
-      println(node.nodeChildren(0).identification)
-      recur(node.nodeChildren(1))
-  }
-  def assignvariable(node:Node): Unit = {
 
+  def beginmain(node: Node): Unit = {
+    recur(node.nodeChildren(0))
   }
-  def setvalue(node:Node): Unit = {
+
+  def printto(node: Node): Unit = {
+    println(node.nodeChildren(0).identification)
+    recur(node.nodeChildren(1))
+  }
+
+  def assignvariable(node: Node): Unit = {
+    val name = node.nodeChildren(0).identification
+    val num = setvalue(node.nodeChildren(1))
+    if (program_int contains name) {
+      program_int(name) = num // Might be an error because reassigning a variable.
+    } else {
+      program_int += (name -> num)
+    }
+  }
+
+  def setvalue(node: Node): Int = {
     if (node.nodeChildren.size == 0) {
       return 0
     }
@@ -168,8 +187,8 @@ class Evaluate extends program_stack {
           case "+" => num += cur
           case "-" => num -= cur
           case "*" => num *= cur
-//          Division not working for some reason
-//          case "/" => num = (Int) (num/cur)
+          //          Division not working for some reason
+          //          case "/" => num = (Int) (num/cur)
           case _ => return num
         }
       } catch {
@@ -177,8 +196,9 @@ class Evaluate extends program_stack {
           op = symbol.identification
         }
       }
-
     }
+    num
   }
 }
+
 object evaluate_object extends Evaluate
