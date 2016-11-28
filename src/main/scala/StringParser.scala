@@ -120,6 +120,9 @@ class StringParser extends has_args{
         if(givenList(0).equals("nonvoidmethod")){
           node.nodeChildren += createNode(givenList.remove(0))
         }
+        else{
+          node.nodeChildren += createNode("voidmethod")
+        }
         //If body is at the top of the stack
         if(!givenList(0).equals("endmethod")) {
           node.nodeChildren += recur("endmethod")
@@ -142,7 +145,6 @@ class StringParser extends has_args{
         sets and determine whether or not the function has an argument. I might do this implementation
         later, but for now the naive solution assumes that everything will have a parameter.
         */
-      //TODO: implement sets to determine whether or not there is an arg
       //callmethod has 3 nodes - method name, arguments, rest of the tree
         //arguments contains 0 or more arguments as children
       case "callmethod" => {

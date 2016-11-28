@@ -2,16 +2,31 @@
   * Created by lyee on 11/27/16.
   */
 package com.example.assign5
+import scala.collection.mutable.ArrayBuffer
 
 trait program_stack {
+  // holds the variable scope
   val program_bool = scala.collection.mutable.HashMap.empty[String, Boolean]
   val function_bool = scala.collection.mutable.HashMap.empty[String, Boolean]
-
+  //holds the function scope
   val program_int = scala.collection.mutable.HashMap.empty[String, Int]
   val function_int = scala.collection.mutable.HashMap.empty[String, Int]
+
+  // holds the function object
+  val function_evaluate = scala.collection.mutable.HashMap.empty[String, Func_info]
+}
+abstract class Func_info{
+  var name:String
+  var body:Node
+  var variables:ArrayBuffer[String]
+  var nonvoid:Boolean
+
 }
 
 class Evaluate extends program_stack {
+  def isDigit(char: Char):Boolean = {
+    return (char + "").forall(_.isDigit) || (char == '.')
+
   def recur(node: Node) {
     node.identification match {
       /*All nodes with exactly one child which will NOT continue the AST any further
@@ -138,13 +153,46 @@ class Evaluate extends program_stack {
   def whilecase(node: Node): Unit = {
 
   }
-
+  //ASSUMING methodname, variable node, voidnode, function node, rest of tree
   def declaremethod(node: Node): Unit = {
+    // the function body is keyed on the name of the function
+    // for every variable, we add it's name to the list of function variables
+    val func_object = new Func_info {
+      override var name: String = node.nodeChildren(0).identification
+      override var body: Node = node.nodeChildren(3)
+      override var variables: ArrayBuffer[String] = new ArrayBuffer[String]
+      override var nonvoid: Boolean = false
+    }
 
+    if(node.nodeChildren(2).identification.equals("nonvoidmethod")){
+      func_object.nonvoid = true
+    }
+
+    for(var_name <- node.nodeChildren(1).nodeChildren) {
+      func_object.variables += var_name.identification
+    }
+    function_evaluate(node.nodeChildren(0).identification) = func_object
+
+    // now we evaluate the rest of the tree
+    recur(node.nodeChildren(4))
   }
-
+  //ASSUMING: method name, method variable node, rest of tree
+  // We need to have either a separate recur that can return someting or change recur to return
   def callmethod(node: Node): Unit = {
-
+    val func_object = function_evaluate(node.nodeChildren(0).identification)
+    for(var_index <- func_object.variables.length){
+      //TYPE SAFTEY YEAH
+      if(node.nodeChildren(1).nodeChildren(var_index).identification.charAt(0).isDigit){
+        function_int(func_object.variables(var_index)) = node.nodeChildren(1).nodeChildren(var_index).identification.toInt
+      }
+      else{
+        function_bool(func_object.variables(var_index)) = node.nodeChildren(1).nodeChildren(var_index).identification.toBoolean
+      }
+    }
+    // recur also needs a parameter that lest you know wether or not you're inside a function
+    recur(func_object.body)
+    recur(node.nodeChildren(2))
+    }
   }
 
   def assignvariablefrommethodcall(node: Node): Unit = {
