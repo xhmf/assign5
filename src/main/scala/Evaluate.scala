@@ -101,8 +101,8 @@ class Evaluate extends program_stack {
         hit the breakCode, aka endassignvariable
        */
       case "setvalue" => {
-        setvalue(node)
-         return node
+        val result = setvalue(node)
+        return result
       }
       case "endmain" => {
         println()
@@ -156,7 +156,29 @@ class Evaluate extends program_stack {
 
   }
   def setvalue(node:Node): Unit = {
+    if (node.nodeChildren.size == 0) {
+      return 0
+    }
+    var op = ""
+    var num = node.nodeChildren(0).identification.toInt
+    for (symbol <- node.nodeChildren.drop(1)) {
+      try {
+        var cur = symbol.identification.toInt
+        op match {
+          case "+" => num += cur
+          case "-" => num -= cur
+          case "*" => num *= cur
+//          Division not working for some reason
+//          case "/" => num = (Int) (num/cur)
+          case _ => return num
+        }
+      } catch {
+        case e: Exception => {
+          op = symbol.identification
+        }
+      }
 
+    }
   }
 }
 object evaluate_object extends Evaluate
