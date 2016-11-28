@@ -17,7 +17,7 @@ class ArnoldKeyword {
 
   def addString(text: String) = {}
 
-  def run() = {}
+  def parse() = {}
 
   def apply(sym: Symbol): ArnoldKeyword = {
     this.addString(sym.name)
@@ -63,7 +63,7 @@ class ArnoldKeyword {
 
   def TERMINATED(): Unit = {
     this.addString("TERMINATED")
-    this.run()
+    this.parse()
   }
 
   def BE(param: ArnoldKeyword): ArnoldKeyword = {
