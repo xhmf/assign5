@@ -2,7 +2,8 @@
   * Created by lyee on 11/27/16.
   */
 package com.example.assign5
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.util.control.NonFatal
 
 trait program_stack {
   // holds the variable scope
@@ -268,24 +269,14 @@ class Evaluate extends program_stack {
 
   def printto(node: Node, funcObject: FuncInfo): Unit = {
     var variable = node.nodeChildren(0).identification
-    if(funcObject.function_bool.contains(variable)) {
-      println(funcObject.function_bool(variable))
+    if(getIntFromVar(variable, funcObject) != null) {
+      println(getIntFromVar(variable, funcObject))
     }
-    //Check function ints
-    else if(funcObject.function_int.contains(variable)) {
-      println(funcObject.function_int(variable))
+    else if(getBoolFromVar(variable, funcObject) != null){
+      println(getBoolFromVar(variable, funcObject))
     }
-    //Check program bools
-    else if(program_bool.contains(variable)) {
-      println(program_bool(variable))
-    }
-    //Check program ints
-    else if(program_int.contains(variable)) {
-      println(program_int(variable))
-    }
-    //case for ints and booleans and strings
     else {
-      println(node.nodeChildren(0).identification)
+      println(variable)
     }
     recur(node.nodeChildren(1), funcObject)
   }
@@ -320,48 +311,200 @@ class Evaluate extends program_stack {
     if (node.nodeChildren.size == 0) {
       throw new Exception("YOU TRIED TO SET A VALUE TO NOTHING")
     }
-    var op = ""
-    var num:Int = node.nodeChildren(0).identification.toInt
-    for (symbol <- node.nodeChildren.drop(1)) {
-      if(isInt(symbol.identification)) {
-        var cur = symbol.identification.toInt
-        op match {
-          case "plus" => num += cur
-          case "minus" => num -= cur
-          case "multiply" => num *= cur
-          case "divide" => num /= cur
-          case _ => return num
+    var operationsArray:ListBuffer[String] = new ListBuffer[String]
+    operationsArray += ("multiply divide")
+    operationsArray += ("plus minus")
+    var expression = node.nodeChildren
+    while(expression.length > 1) {
+      var pos:Int = 0
+      var curOpSet:Set[String] = operationsArray.remove(0).split(" ").toSet
+      while(pos < expression.length) {
+        var indexElement = expression(pos).identification
+        if(curOpSet contains indexElement) {
+          var a = getIntFromVar(expression(pos-1).identification, funcObject)
+          var b = getIntFromVar(expression(pos+1).identification, funcObject)
+          indexElement match {
+            case "plus" => {
+              expression(pos).identification= a+b+""
+            }
+            case "minus" => {
+              expression(pos).identification= a-b+""
+            }
+            case "multiply" => {
+              expression(pos).identification= a*b+""
+            }
+            case "divide" => {
+              expression(pos).identification= a/b+""
+            }
+            case _ => throw new Exception("invalid operation")
+          }
+          expression.remove(pos+1)
+          expression.remove(pos-1)
+          pos-=1
         }
-      }
-      else {
-        op = symbol.identification
+        pos+=1
       }
     }
-    return num
+    return getIntFromVar(expression(0).identification, funcObject)
   }
 
-  //TODO: Tackle this.
   def setvalueBool(node: Node, funcObject: FuncInfo): Boolean = {
     if (node.nodeChildren.size == 0) {
-      throw new Exception("that should be in all caps lyee")
+      throw new Exception("YOU TRIED TO SET A VALUE TO NOTHING")
     }
-    var op = ""
-    var bool:Boolean = node.nodeChildren(0).identification.toBoolean
-    for (symbol <- node.nodeChildren.drop(1)) {
-      if(isBoolean(symbol.identification)) {
-        var cur = symbol.identification.toBoolean
-        op match {
-          case "and" => bool = bool && cur
-          case "or" => bool = bool || cur
-          case "equals" => bool = bool==cur
-          case _ => return bool
+    var operationsArray:ListBuffer[String] = new ListBuffer[String]
+    operationsArray += ("multiply divide")
+    operationsArray += ("plus minus")
+    operationsArray += ("greaterthan")
+    //Check for number equality
+    operationsArray += ("equals")
+    operationsArray += ("and")
+    operationsArray += ("or")
+    //Check for boolean equality
+    operationsArray += ("equals")
+    //The first time we want to check for number equality. We'll set this to false after checking equals the first time
+    var numericalEqualsFlag:Boolean = true
+
+    var expression = node.nodeChildren
+    while(expression.length > 1) {
+      var pos:Int = 0
+      var curOpSet:Set[String] = operationsArray.remove(0).split(" ").toSet
+      while(pos < expression.length) {
+        var indexElement = expression(pos).identification
+        if(curOpSet contains indexElement) {
+          indexElement match {
+            case "plus" => {
+              var a = getIntFromVar(expression(pos-1).identification, funcObject)
+              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              expression(pos).identification= a+b+""
+              expression.remove(pos+1)
+              expression.remove(pos-1)
+              pos-=1
+            }
+            case "minus" => {
+              var a = getIntFromVar(expression(pos-1).identification, funcObject)
+              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              expression(pos).identification= a-b+""
+              expression.remove(pos+1)
+              expression.remove(pos-1)
+              pos-=1
+            }
+            case "multiply" => {
+              var a = getIntFromVar(expression(pos-1).identification, funcObject)
+              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              expression(pos).identification= a*b+""
+              expression.remove(pos+1)
+              expression.remove(pos-1)
+              pos-=1
+            }
+            case "divide" => {
+              var a = getIntFromVar(expression(pos-1).identification, funcObject)
+              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              expression(pos).identification= a/b+""
+              expression.remove(pos+1)
+              expression.remove(pos-1)
+              pos-=1
+            }
+            case "greaterthan" => {
+              var a = getIntFromVar(expression(pos-1).identification, funcObject)
+              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              expression(pos).identification= (a > b) + ""
+              expression.remove(pos+1)
+              expression.remove(pos-1)
+              pos-=1
+            }
+            case "equals" => {
+              //We have numbers on both sides
+              if(numericalEqualsFlag) {
+                var a = getIntFromVar(expression(pos-1).identification, funcObject)
+                var b = getIntFromVar(expression(pos+1).identification, funcObject)
+                if(a != null && b != null) {
+                  expression(pos).identification= (a == b) + ""
+                  expression.remove(pos+1)
+                  expression.remove(pos-1)
+                  pos-=1
+                }
+              }
+              else {
+                var a = getBoolFromVar(expression(pos-1).identification, funcObject)
+                var b = getBoolFromVar(expression(pos+1).identification, funcObject)
+                if(a != null && b != null) {
+                  expression(pos).identification= (a == b) + ""
+                  expression.remove(pos+1)
+                  expression.remove(pos-1)
+                  pos-=1
+                }
+              }
+            }
+            case "and" => {
+              var a = getBoolFromVar(expression(pos-1).identification, funcObject)
+              var b = getBoolFromVar(expression(pos+1).identification, funcObject)
+              expression(pos).identification= (a && b) + ""
+              expression.remove(pos+1)
+              expression.remove(pos-1)
+              pos-=1
+            }
+            case "or" => {
+              var a = getBoolFromVar(expression(pos-1).identification, funcObject)
+              var b = getBoolFromVar(expression(pos+1).identification, funcObject)
+              expression(pos).identification= (a || b) + ""
+              expression.remove(pos+1)
+              expression.remove(pos-1)
+              pos-=1
+            }
+            case _ => throw new Exception("invalid operation")
+          }
+          //After we hit equality check the first time, set the flag to false
+          if(curOpSet.contains("equals")) {
+            numericalEqualsFlag = false
+          }
         }
-      }
-      else {
-        op = symbol.identification
+        pos+=1
       }
     }
-    return bool
+    return getBoolFromVar(expression(0).identification, funcObject)
+  }
+
+  def getIntFromVar(variable:String, funcObject: FuncInfo): Int = {
+    try {
+      //Check function ints
+      if(funcObject.function_int.contains(variable)) {
+        return funcObject.function_int(variable)
+      }
+      //Check program ints
+      else if(program_int.contains(variable)) {
+        return program_int(variable)
+      }
+      //case for ints and booleans and strings
+      else {
+        return variable.toInt
+      }
+    }
+    catch {
+      case NonFatal(t) => return null
+    }
+    return null
+  }
+
+  def getBoolFromVar(variable:String, funcObject: FuncInfo): Boolean = {
+    try {
+      //Check function ints
+      if(funcObject.function_bool.contains(variable)) {
+        return funcObject.function_bool(variable)
+      }
+      //Check program ints
+      else if(program_bool.contains(variable)) {
+        return program_bool(variable)
+      }
+      //case for ints and booleans and strings
+      else {
+        return variable.toBoolean
+      }
+    }
+    catch {
+      case NonFatal(t) => return null
+    }
+    return null
   }
 
   def isBoolean(string: String): Boolean = {
