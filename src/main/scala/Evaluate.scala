@@ -26,6 +26,7 @@ abstract class Func_info{
 class Evaluate extends program_stack {
   def isDigit(char: Char):Boolean = {
     return (char + "").forall(_.isDigit) || (char == '.')
+  }
 
   def recur(node: Node) {
     node.identification match {
@@ -180,7 +181,7 @@ class Evaluate extends program_stack {
   // We need to have either a separate recur that can return someting or change recur to return
   def callmethod(node: Node): Unit = {
     val func_object = function_evaluate(node.nodeChildren(0).identification)
-    for(var_index <- func_object.variables.length){
+    for(var_index <- 0 to func_object.variables.length){
       //TYPE SAFTEY YEAH
       if(node.nodeChildren(1).nodeChildren(var_index).identification.charAt(0).isDigit){
         function_int(func_object.variables(var_index)) = node.nodeChildren(1).nodeChildren(var_index).identification.toInt
@@ -192,7 +193,6 @@ class Evaluate extends program_stack {
     // recur also needs a parameter that lest you know wether or not you're inside a function
     recur(func_object.body)
     recur(node.nodeChildren(2))
-    }
   }
 
   def assignvariablefrommethodcall(node: Node): Unit = {
