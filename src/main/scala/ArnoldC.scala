@@ -1,5 +1,7 @@
 package com.example.assign5
 
+import scala.collection.mutable.ArrayBuffer
+
 
 class ArnoldC {
   var text: String = ""
@@ -18,7 +20,13 @@ class ArnoldC {
       object StringParserInstance extends StringParser
       var node:Node = StringParserInstance.parseStringIntoAST(text)
       //PrintNodeObject.printNodeNicely(node, 0)
-      evaluate_object.recur(node)
+      val func_object = new FuncInfo {
+        override var name: String = ""
+        override var body: Node = null
+        override var variables: ArrayBuffer[String] = new ArrayBuffer[String]
+        override var nonvoid: Boolean = true
+      }
+      evaluate_object.recur(node, func_object)
     };
   }
 
