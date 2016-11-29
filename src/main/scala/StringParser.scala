@@ -102,6 +102,8 @@ class StringParser extends has_args{
 
         val methodname = givenList.remove(0)
         node.nodeChildren += createNode(methodname)
+        val argsNode = createNode("args")
+        node.nodeChildren += argsNode
         //If arguments is at the top of the stack
         argument_function(methodname) = 0
         //There's the possibity of multiple arguments, but each is preceeded by methodargs
@@ -109,7 +111,7 @@ class StringParser extends has_args{
           //println(methodname + " Has Args")
           //remove methodargs because we don't need that on the stack
           givenList.remove(0)
-          node.nodeChildren += createNode(givenList.remove(0))
+          argsNode.nodeChildren += createNode(givenList.remove(0))
           argument_function(methodname) = argument_function(methodname) + 1
         }
 
@@ -151,9 +153,10 @@ class StringParser extends has_args{
         val methodname = givenList(0)
         node.nodeChildren += createNode(givenList.remove(0))
         var method_arg_number = argument_function(methodname)
-        node.nodeChildren += createNode("args")
+        val argsNode = createNode("args")
+        node.nodeChildren += argsNode
         while(method_arg_number > 0){
-          node.nodeChildren += createNode(givenList.remove(0))
+          argsNode.nodeChildren += createNode(givenList.remove(0))
           method_arg_number -= 1
         }
         return node
