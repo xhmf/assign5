@@ -29,39 +29,25 @@ class Evaluate extends program_stack {
     return (char + "").forall(_.isDigit) || (char == '.')
   }
 
-  def recur(node: Node, funcObject: FuncInfo) {
+  def recur(node: Node, funcObject: FuncInfo): String = {
     node.identification match {
       /*All nodes with exactly one child which will NOT continue the AST any further
         Aditionally, I just changed the structure of "setvalue" so that it will be completely flat.
         This means that plus, minus, etc. should all be absorbed by setvalue and this statement should
         never get hit for any of these cases, besides the last 4.
         */
-
-      case "equals" => {
-        equalsto(node, funcObject)
-        return node
-      }
-      case "greaterthan" => {
-        greaterthan(node, funcObject)
-        return node
-      }
-
       case "return" => {
-        returnto(node, funcObject)
-        return node
+        return returnto(node, funcObject)
       }
       case "setinitialvalue" => {
         setinitialvalue(node, funcObject)
-        return node
       }
       case "if" => {
         ifcase(node, funcObject)
-        return node
       }
       //"While" will have three nodes - conditional, statement, rest of tree
       case "while" => {
         whilecase(node, funcObject)
-        return node
       }
       /*Declare method can have 2-4 params in the following order:
           method name
@@ -78,48 +64,34 @@ class Evaluate extends program_stack {
       // nonvoidmethod can't be used like declaremethod
       case "declaremethod" => {
         declaremethod(node, funcObject)
-        return node
       }
       // callmethod will have 3 children, the method name, "arguments", and the rest of the AST
       // "arguments" will have n number of children representing the corresponding n arguments of the tree
       case "callmethod" => {
         callmethod(node, funcObject)
-        return node
       }
       //assignvariablefrommethodcall will have three args - variable name, func call, rest of AST
       //I think this function is unnecessary. We'll see if we can remove this in the future.
       case "assignvariablefrommethodcall" => {
         assignvariablefrommethodcall(node, funcObject)
-        return node
       }
       //Three nodes - var name, int value (caught by setinitialvalue), rest of ast
       case "declareint" => {
         declareint(node, funcObject)
-        return node
       }
       //Should only have one AST but this one's the most important!!!!
       case "beginmain" => {
         beginmain(node, funcObject)
-        return node
       }
       //Two nodes! What to print and the AST
       case "print" => {
         printto(node, funcObject)
-        return node
       }
       /*This one only has three children. Name of variable to assign,
         the assignment equation (caught by setvalue), and the rest of the tree
        */
       case "assignvariable" => {
         assignvariable(node, funcObject)
-        return node
-      }
-      /*This is the fun one! It has n children but we don't know how many it has until we
-        hit the breakCode, aka endassignvariable
-       */
-      case "setvalue" => {
-        val result = setvalue(node, funcObject)
-        return result
       }
       case "endmain" => {
         println()
@@ -130,28 +102,43 @@ class Evaluate extends program_stack {
         throw new Exception("Spotted unexpected token:: " + node.identification)
       }
     }
+    return ""
   }
 
-  def equalsto(node: Node, funcObject: FuncInfo): Unit = {
-
-  }
-
-  def greaterthan(node: Node, funcObject: FuncInfo): Unit = {
-
-  }
-
-  def returnto(node: Node, funcObject: FuncInfo): Unit = {
-
+  def returnto(node: Node, funcObject: FuncInfo): String = {
+    var variable = node.nodeChildren(0).identification
+    if(funcObject.function_bool.contains(variable)) {
+      return funcObject.function_bool(variable).toString
+    }
+    //Check function ints
+    else if(funcObject.function_int.contains(variable)) {
+      return funcObject.function_int(variable).toString
+    }
+    //Check program bools
+    else if(program_bool.contains(variable)) {
+      return program_bool(variable).toString
+    }
+    //Check program ints
+    else if(program_int.contains(variable)) {
+      return program_int(variable).toString
+    }
+    //case for ints and booleans and strings
+    else {
+      return variable
+    }
   }
 
   def setinitialvalue(node: Node, funcObject: FuncInfo): Unit = {
-
   }
 
+  //The conditional as the nodeChildren(0) will only have one of the following values:
+  //"true", "false", or a variable
+  //Also check number of children since there might be an else case here
   def ifcase(node: Node, funcObject: FuncInfo): Unit = {
 
   }
-
+  //The conditional as the nodeChildren(0) will only have one of the following values:
+  //"true", "false", or a variable
   def whilecase(node: Node, funcObject: FuncInfo): Unit = {
 
   }
@@ -214,13 +201,61 @@ class Evaluate extends program_stack {
         currfuncObject.function_bool(currfuncObject.variables(var_index)) = argument.toBoolean
       }
     }
-    // recur also needs a parameter that lest you know wether or not you're inside a function
+    // recur also needs a parameter that lest you know whether or not you're inside a function
     recur(currfuncObject.body, currfuncObject)
     recur(node.nodeChildren(2), funcObject)
   }
 
   def assignvariablefrommethodcall(node: Node, funcObject: FuncInfo): Unit = {
+    var variableToAssign = node.nodeChildren(0).identification
+    val currfuncObject = function_evaluate(node.nodeChildren(1).identification)
+    val arguments = node.nodeChildren(2)
+    for(var_index <- 0 to currfuncObject.variables.length){
+      val argument = arguments.nodeChildren(var_index).identification
 
+      //In the case of vars, set the argument value to the value of the variable
+      //check each variable scope for the variable
+
+      //Check function bools
+      if(funcObject.function_bool.contains(argument)) {
+        currfuncObject.function_bool(currfuncObject.variables(var_index)) = funcObject.function_bool(argument)
+      }
+      //Check function ints
+      else if(funcObject.function_int.contains(argument)) {
+        currfuncObject.function_int(currfuncObject.variables(var_index)) = funcObject.function_int(argument)
+      }
+      //Check program bools
+      else if(program_bool.contains(argument)) {
+        currfuncObject.function_bool(currfuncObject.variables(var_index)) = program_bool(argument)
+      }
+      //Check program ints
+      else if(program_int.contains(argument)) {
+        currfuncObject.function_int(currfuncObject.variables(var_index)) = program_int(argument)
+      }
+      //case for ints
+      else if(isInt(argument)){
+        currfuncObject.function_int(currfuncObject.variables(var_index)) = argument.toInt
+      }
+      //case for booleans
+      else if(isBoolean(argument)) {
+        currfuncObject.function_bool(currfuncObject.variables(var_index)) = argument.toBoolean
+      }
+    }
+    // recur also needs a parameter that lest you know whether or not you're inside a function
+    val returnResult = recur(currfuncObject.body, currfuncObject)
+
+    //Check to see if the variable which we're assigning exists
+    if(funcObject.function_bool.contains(variableToAssign)) {
+
+    }
+    //TODO: Debug this if functions break?
+    if(isInt(returnResult)) {
+      setIntHelper(variableToAssign, returnResult.toInt, funcObject)
+    }
+    else {
+      setBooleanHelper(variableToAssign, returnResult.toBoolean, funcObject)
+    }
+    recur(node.nodeChildren(2), funcObject)
   }
 
   def declareint(node: Node, funcObject: FuncInfo): Unit = {
@@ -258,7 +293,19 @@ class Evaluate extends program_stack {
   def assignvariable(node: Node, funcObject: FuncInfo): Unit = {
     val name = node.nodeChildren(0).identification
     //Check to see if this operation is performed on an int or a bool
-    if(isInt(node.nodeChildren(1).nodeChildren(0).identification)) {
+    var willReturnInt:Boolean = true
+    for(child <- node.nodeChildren(1).nodeChildren) {
+      //For every node inside of the setvalue function, if we run into a case which is either:
+      //Not an int, not an op, or does not exist as a variable
+      //we automatically know that the result of setvalue will be a boolean.
+      if( !(isInt(child.identification)
+        || isOp(child.identification)
+        || funcObject.function_int.contains(child.identification)
+        || program_int.contains(child.identification))) {
+        willReturnInt = false
+      }
+    }
+    if(willReturnInt) {
       val result = setvalueInt(node.nodeChildren(1), funcObject)
       setIntHelper(name, result, funcObject)
     }
@@ -266,6 +313,7 @@ class Evaluate extends program_stack {
       val result = setvalueBool(node.nodeChildren(1), funcObject)
       setBooleanHelper(name, result, funcObject)
     }
+    recur(node.nodeChildren(2), funcObject)
   }
 
   def setvalueInt(node: Node, funcObject: FuncInfo): Int = {
@@ -292,6 +340,7 @@ class Evaluate extends program_stack {
     return num
   }
 
+  //TODO: Tackle this.
   def setvalueBool(node: Node, funcObject: FuncInfo): Boolean = {
     if (node.nodeChildren.size == 0) {
       throw new Exception("that should be in all caps lyee")
@@ -304,6 +353,7 @@ class Evaluate extends program_stack {
         op match {
           case "and" => bool = bool && cur
           case "or" => bool = bool || cur
+          case "equals" => bool = bool==cur
           case _ => return bool
         }
       }
@@ -319,6 +369,10 @@ class Evaluate extends program_stack {
   }
   def isInt(string: String): Boolean = {
     return  string.charAt(0).isDigit || string.charAt(0) =='-'
+  }
+
+  def isOp(string: String): Boolean = {
+    return string.equals("plus") || string.equals("minus") || string.equals("multiply") ||  string.equals("divide")
   }
 
   def setIntHelper(variable:String, num:Int, funcObject: FuncInfo): Unit = {
