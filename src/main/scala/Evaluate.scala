@@ -100,6 +100,9 @@ class Evaluate extends program_stack {
       case "endif" => {
         println()
       }
+      case "else" => {
+        println()
+      }
       case "endwhile" => {
         println()
       }
@@ -147,10 +150,9 @@ class Evaluate extends program_stack {
       } else if (numNodes == 4) {
         recur(node.nodeChildren(2), funcObject)
       }
-        println("bool: " + bool)
-        println("numNodes: " + numNodes)
       case None => println("ERROR") // probably throw error
     }
+    recur(node.nodeChildren(numNodes-1), funcObject)
   }
 
   //The conditional as the nodeChildren(0) will only have one of the following values:
@@ -168,6 +170,7 @@ class Evaluate extends program_stack {
         case _ => cond = false
       }
     }
+    recur(node.nodeChildren(2), funcObject)
   }
 
   //ASSUMING methodname, variable node, voidnode, function node, rest of tree
@@ -521,9 +524,6 @@ class Evaluate extends program_stack {
   }
 
   def getBoolFromVar(variable: String, funcObject: FuncInfo): Option[Boolean] = {
-    if (variable == "true" || variable == "false") {
-      return Option(variable.toBoolean)
-    }
     try {
       //Check function ints
       if (funcObject.function_bool.contains(variable)) {

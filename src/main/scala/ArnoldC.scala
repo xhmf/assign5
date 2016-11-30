@@ -230,33 +230,39 @@ class ArnoldC {
 
 object Arnold extends ArnoldC {
   def main(args: Array[String]): Unit = {
-    //ITS SHOWTIME
-    // HEY CHRISTMAS_TREE 'varr
-    // YOU SET US UP 123
-    // TALK TO THE HAND 'varr
-    // YOU HAVE BEEN TERMINATED
+    ITS SHOWTIME
+      HEY CHRISTMAS_TREE 'limit
+      YOU SET US UP 10
+    HEY CHRISTMAS_TREE 'index
+      YOU SET US UP 1
+    HEY CHRISTMAS_TREE 'squared
+      YOU SET US UP 1
+    HEY CHRISTMAS_TREE 'loop
+      YOU SET US UP NO PROBLEMO
+      STICK AROUND 'loop
+    GET TO THE CHOPPER 'squared
+    HERE IS MY INVITATION 'index
+    YOURE FIRED 'index
+    ENOUGH TALK
+      TALK TO THE HAND 'squared
+    GET TO THE CHOPPER 'loop
+    HERE IS MY INVITATION 'limit
+    LET OFF SOME STEAM_BENNET 'index
+      ENOUGH TALK
+      GET TO THE CHOPPER 'index
+    HERE IS MY INVITATION 'index
+    GET UP 1
+    ENOUGH TALK
+      THATS CHILL
+    YOU HAVE BEEN TERMINATED
 
-        ITS SHOWTIME
-//          HEY CHRISTMAS_TREE 'a
-//          YOU SET US UP 22
-//          GET TO THE CHOPPER 'a
-//          HERE IS MY INVITATION 123
-//          GET UP 1
-//          ENOUGH TALK
-//          TALK TO THE HAND 'a
-//          GET TO THE CHOPPER 'myvar
-//            HERE IS MY INVITATION NO PROBLEMO
-//          ENOUGH TALK
-    //      BECAUSE IM GOING TO SAY PLEASE 'myvar
-    //        TALK TO THE HAND "worked"
-    //      YOU HAVE NO RESPECT FOR LOGIC
-            BECAUSE IM GOING TO SAY PLEASE I LIED
-              TALK TO THE HAND "true"
-            THATS BULLSHIT
-              TALK TO THE HAND "false"
-            YOU HAVE NO RESPECT FOR LOGIC
-            TALK TO THE HAND "end"
-        YOU HAVE BEEN TERMINATED
+//          ITS SHOWTIME
+//          STICK AROUND
+//          I LIED
+//          TALK TO THE HAND "POTATO"
+//          THATS CHILL
+//          TALK TO THE HAND "OUTSIDE OF WHILE LOOP"
+//          YOU HAVE BEEN TERMINATED
     //    ITS SHOWTIME
     //      HEY CHRISTMAS_TREE 'isLessThan10
     //      YOU SET US UP NO PROBLEMO

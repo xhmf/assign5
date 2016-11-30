@@ -17,6 +17,9 @@ class StringParser extends has_args{
   var givenList:ListBuffer[String] = new ListBuffer[String]
   def parseStringIntoAST(string: String): Node = {
     givenList = StringListInstance.getSequence(string)
+    for (i <- givenList) {
+      println(i)
+    }
     recur("endmain")
   }
 
@@ -69,9 +72,8 @@ class StringParser extends has_args{
         //Insert body here
         node.nodeChildren += recur("endif")
         //If there's an else, it will be at the top of the stack
-        for (i <- givenList) {
-          println(i)
-        }
+
+
         currOp = givenList.remove(0)
         println("curOp: " + currOp)
         if(currOp.equals("else")) {
