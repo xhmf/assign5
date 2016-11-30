@@ -137,6 +137,9 @@ class StringParser extends has_args{
         if(!givenList(0).equals("endmethod")) {
           node.nodeChildren += recur("endmethod")
         }
+        else {
+          node.nodeChildren+= createNode("empty body")
+        }
         //Now no matter what, endmethod will be at the top of the stack
         givenList.remove(0)
 
@@ -167,6 +170,7 @@ class StringParser extends has_args{
           argsNode.nodeChildren += createNode(givenList.remove(0))
           method_arg_number -= 1
         }
+        node.nodeChildren+= recur(breakCode)
         return node
       }
       //assignvariablefrommethodcall will have three args - variable name, func call, rest of AST
@@ -174,7 +178,17 @@ class StringParser extends has_args{
       case "assignvariablefrommethodcall" => {
         node.nodeChildren += createNode(givenList.remove(0))
         //The next case will be callmethod
-        node.nodeChildren += recur("irrelevant; should hit the callmethod case")
+        node.nodeChildren += createNode(givenList.remove(0))
+
+        val methodname = givenList(0)
+        node.nodeChildren(1).nodeChildren += createNode(givenList.remove(0))
+        var method_arg_number = argument_function(methodname)
+        val argsNode = createNode("args")
+        node.nodeChildren(1).nodeChildren += argsNode
+        while(method_arg_number > 0){
+          argsNode.nodeChildren += createNode(givenList.remove(0))
+          method_arg_number -= 1
+        }
         node.nodeChildren += recur(breakCode)
         return node
       }

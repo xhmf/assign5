@@ -95,16 +95,19 @@ class Evaluate extends program_stack {
         assignvariable(node, funcObject)
       }
       case "endmain" => {
-        println()
+
       }
       case "endif" => {
-        println()
+
       }
       case "else" => {
-        println()
+
       }
       case "endwhile" => {
-        println()
+
+      }
+      case "endmethod" =>{
+
       }
       //Uhoh!! Should never reach here!!
       case _ => {
@@ -202,9 +205,10 @@ class Evaluate extends program_stack {
   def callmethod(node: Node, funcObject: FuncInfo): Unit = {
     val currfuncObject = function_evaluate(node.nodeChildren(0).identification)
     var arguments = node.nodeChildren(1)
-    for (var_index <- 0 to currfuncObject.variables.length) {
+    //for (var_index <- 0 to currfuncObject.variables.length) {
+    var var_index:Int = 0
+    while(var_index < currfuncObject.variables.length){
       var argument = arguments.nodeChildren(var_index).identification
-
       //In the case of vars, set the argument value to the value of the variable
       //check each variable scope for the variable
 
@@ -232,10 +236,12 @@ class Evaluate extends program_stack {
       else if (isBoolean(argument)) {
         currfuncObject.function_bool(currfuncObject.variables(var_index)) = argument.toBoolean
       }
+      var_index = var_index + 1
     }
     // recur also needs a parameter that lest you know whether or not you're inside a function
     recur(currfuncObject.body, currfuncObject)
     recur(node.nodeChildren(2), funcObject)
+
   }
 
   def assignvariablefrommethodcall(node: Node, funcObject: FuncInfo): Unit = {

@@ -230,26 +230,42 @@ class ArnoldC {
 
 object Arnold extends ArnoldC {
   def main(args: Array[String]): Unit = {
-    ITS SHOWTIME
-      HEY CHRISTMAS_TREE 'loop
-      YOU SET US UP NO PROBLEMO
-      HEY CHRISTMAS_TREE 'counter
-      YOU SET US UP 1
-      STICK AROUND 'loop
-        TALK TO THE HAND 'counter
-        GET TO THE CHOPPER 'counter
-          HERE IS MY INVITATION 'counter
-          GET UP 1
-          ENOUGH TALK
-        TALK TO THE HAND "#####################################################################################"
-        TALK TO THE HAND 'counter
-        GET TO THE CHOPPER 'loop
-          HERE IS MY INVITATION 7
-          LET OFF SOME STEAM_BENNET 'counter
-          ENOUGH TALK
-      THATS CHILL
-      DO IT_NOW 'method
-    YOU HAVE BEEN TERMINATED
+
+//    ITS SHOWTIME
+//      HEY CHRISTMAS_TREE 'loop
+//      YOU SET US UP NO PROBLEMO
+//      HEY CHRISTMAS_TREE 'counter
+//      YOU SET US UP 1
+//      STICK AROUND 'loop
+//        TALK TO THE HAND 'counter
+//        GET TO THE CHOPPER 'counter
+//          HERE IS MY INVITATION 'counter
+//          GET UP 1
+//          ENOUGH TALK
+//        TALK TO THE HAND "#####################################################################################"
+//        TALK TO THE HAND 'counter
+//        GET TO THE CHOPPER 'loop
+//          HERE IS MY INVITATION 7
+//          LET OFF SOME STEAM_BENNET 'counter
+//          ENOUGH TALK
+//      THATS CHILL
+//    YOU HAVE BEEN TERMINATED
+
+      LISTEN TO ME VERY_CAREFULLY "mymethod"
+      HEY CHRISTMAS_TREE 'testvar
+      YOU SET US UP 80
+      TALK TO THE HAND 'testvar
+      TALK TO THE HAND "OUGWPJHBSDOIVLUBWEIPUBD"
+      HASTA LA VISTA BABY
+      ITS SHOWTIME
+      HEY CHRISTMAS_TREE 'testcar
+      YOU SET US UP 50
+      TALK TO THE HAND "Hello"
+      DO IT_NOW "mymethod"
+      TALK TO THE HAND 'testcar
+      TALK TO THE HAND 'testvar
+      YOU HAVE BEEN TERMINATED
+
 
 //    ITS SHOWTIME
 //      HEY CHRISTMAS_TREE 'varrr
