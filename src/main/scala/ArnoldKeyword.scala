@@ -1544,6 +1544,22 @@ class ArnoldKeyword {
     this.stringParam(param)
   }
 
+  def IT_NOW(param: ArnoldKeyword): ArnoldKeyword = {
+    this.arnoldParam(param.getName())
+  }
+
+  def IT_NOW(param: Symbol): ArnoldKeyword = {
+    this.symbolParam(param.name)
+  }
+
+  def IT_NOW(param: Int): ArnoldKeyword = {
+    this.intParam(param.toString())
+  }
+
+  def IT_NOW(param: String): ArnoldKeyword = {
+    this.stringParam(param)
+  }
+
   def SPLIT(param: ArnoldKeyword): ArnoldKeyword = {
     this.arnoldParam(param.getName())
   }

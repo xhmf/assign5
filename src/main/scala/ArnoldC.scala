@@ -248,6 +248,7 @@ object Arnold extends ArnoldC {
           LET OFF SOME STEAM_BENNET 'counter
           ENOUGH TALK
       THATS CHILL
+      DO IT_NOW 'method
     YOU HAVE BEEN TERMINATED
 
 //    ITS SHOWTIME
