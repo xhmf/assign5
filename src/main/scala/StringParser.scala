@@ -33,7 +33,7 @@ class StringParser extends has_args{
     //needs a special case for if vs if/else
     if(checkOp.equals(breakCode) || (checkOp.equals("else") && breakCode.equals("endif"))) {
       //Don't remove the breakCode, specifically for the if statement
-      return createNode(breakCode)
+      return createNode(checkOp)
     }
     //surround with try catch!!
     var currOp:String = givenList.remove(0)
@@ -69,9 +69,15 @@ class StringParser extends has_args{
         //Insert body here
         node.nodeChildren += recur("endif")
         //If there's an else, it will be at the top of the stack
+        for (i <- givenList) {
+          println(i)
+        }
         currOp = givenList.remove(0)
+        println("curOp: " + currOp)
         if(currOp.equals("else")) {
-            node.nodeChildren += recur("endif")
+          node.nodeChildren += recur("endif")
+          givenList.remove(0)
+          println("ADDED CHILD")
         }
         node.nodeChildren += recur(breakCode)
         return node

@@ -91,13 +91,9 @@ class IntegrationTests extends FunSpec {
         ENOUGH TALK
           CHILL
         YOU HAVE BEEN TERMINATED
-
-
-
       }
     }
     ExtensiveTestCase.run()
 
   }
-
 }

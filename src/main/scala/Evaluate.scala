@@ -100,6 +100,9 @@ class Evaluate extends program_stack {
       case "endif" => {
         println()
       }
+      case "endwhile" => {
+        println()
+      }
       //Uhoh!! Should never reach here!!
       case _ => {
         //All leaf nodes should be caught by one of the other methods :PPPP
@@ -144,6 +147,13 @@ class Evaluate extends program_stack {
       } else if (numNodes == 4) {
         recur(node.nodeChildren(2), funcObject)
       }
+        println("bool: " + bool)
+        println("numNodes: " + numNodes)
+        println("NODES")
+        for (i <- node.nodeChildren) {
+          println(i.identification)
+        }
+        println("ENDNODES")
       case None => println("ERROR") // probably throw error
     }
   }
@@ -153,9 +163,16 @@ class Evaluate extends program_stack {
   def whilecase(node: Node, funcObject: FuncInfo): Unit = {
     val condString = node.nodeChildren(0).identification
     var cond = true
+    println(funcObject)
     while (cond) {
       getBoolFromVar(condString, funcObject) match {
-        case Some(true) => recur(node.nodeChildren(1), funcObject) // Only continue if condition is true
+        case Some(bool) => if (bool) {
+          recur(node.nodeChildren(1), funcObject)
+          println(funcObject)
+          println(bool)
+        } else {
+          cond = false
+        } // Only continue if condition is true
         case _ => cond = false
       }
     }
