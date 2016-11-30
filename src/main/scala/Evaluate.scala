@@ -149,11 +149,6 @@ class Evaluate extends program_stack {
       }
         println("bool: " + bool)
         println("numNodes: " + numNodes)
-        println("NODES")
-        for (i <- node.nodeChildren) {
-          println(i.identification)
-        }
-        println("ENDNODES")
       case None => println("ERROR") // probably throw error
     }
   }
@@ -163,13 +158,10 @@ class Evaluate extends program_stack {
   def whilecase(node: Node, funcObject: FuncInfo): Unit = {
     val condString = node.nodeChildren(0).identification
     var cond = true
-    println(funcObject)
     while (cond) {
       getBoolFromVar(condString, funcObject) match {
         case Some(bool) => if (bool) {
           recur(node.nodeChildren(1), funcObject)
-          println(funcObject)
-          println(bool)
         } else {
           cond = false
         } // Only continue if condition is true

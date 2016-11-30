@@ -34,6 +34,8 @@ class ArnoldC {
 
   object THAT extends Z
 
+  object THATS extends Z
+
   object BACK extends Z
 
   object WANT extends Z
@@ -250,7 +252,7 @@ object Arnold extends ArnoldC {
     //      YOU HAVE NO RESPECT FOR LOGIC
             BECAUSE IM GOING TO SAY PLEASE I LIED
               TALK TO THE HAND "true"
-            BULLSHIT
+            THATS BULLSHIT
               TALK TO THE HAND "false"
             YOU HAVE NO RESPECT FOR LOGIC
             TALK TO THE HAND "end"

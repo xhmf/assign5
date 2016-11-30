@@ -24,6 +24,11 @@ class ArnoldKeyword {
     this
   }
 
+  def apply(): ArnoldKeyword = {
+    this.addString(this.getName())
+    this
+  }
+
   private def methodToString(name: String): String = {
     name.replace("_", " ")
   }
@@ -95,6 +100,22 @@ class ArnoldKeyword {
   }
 
   def THAT(param: String): ArnoldKeyword = {
+    this.stringParam(param)
+  }
+
+  def THATS(param: ArnoldKeyword): ArnoldKeyword = {
+    this.arnoldParam(param.getName())
+  }
+
+  def THATS(param: Symbol): ArnoldKeyword = {
+    this.symbolParam(param.name)
+  }
+
+  def THATS(param: Int): ArnoldKeyword = {
+    this.intParam(param.toString())
+  }
+
+  def THATS(param: String): ArnoldKeyword = {
     this.stringParam(param)
   }
 
