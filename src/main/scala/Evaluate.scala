@@ -351,7 +351,7 @@ class Evaluate extends program_stack {
     var operationsArray: ListBuffer[String] = new ListBuffer[String]
     operationsArray += ("multiply divide")
     operationsArray += ("plus minus")
-    var expression = node.nodeChildren
+    var expression = (node.nodeChildren).clone()
     while (expression.length > 1) {
       var pos: Int = 0
       var curOpSet: Set[String] = operationsArray.remove(0).split(" ").toSet
@@ -382,6 +382,7 @@ class Evaluate extends program_stack {
         pos += 1
       }
     }
+    // is this the problem?
     return getIntFromVar(expression(0).identification, funcObject).get
   }
 
@@ -402,7 +403,7 @@ class Evaluate extends program_stack {
     //The first time we want to check for number equality. We'll set this to false after checking equals the first time
     var numericalEqualsFlag: Boolean = true
 
-    var expression = node.nodeChildren
+    var expression = (node.nodeChildren).clone()
     while (expression.length > 1) {
       var pos: Int = 0
       var curOpSet: Set[String] = operationsArray.remove(0).split(" ").toSet

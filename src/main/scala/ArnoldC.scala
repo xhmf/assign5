@@ -261,6 +261,10 @@ object Arnold extends ArnoldC {
       HERE IS MY INVITATION 'varrr
       GET UP 1
       ENOUGH TALK
+    GET TO THE CHOPPER 'varrr
+    HERE IS MY INVITATION 'varrr
+    GET UP 1
+    ENOUGH TALK
       TALK TO THE HAND 'varrr
       YOU HAVE BEEN TERMINATED
 
