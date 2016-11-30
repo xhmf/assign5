@@ -16,7 +16,6 @@ class ArnoldC {
     override def getName(): String = this.getClass.getName.split("\\$")(1)
 
     override def parse(): Unit = {
-      println(text)
       object StringParserInstance extends StringParser
       var node:Node = StringParserInstance.parseStringIntoAST(text)
       //PrintNodeObject.printNodeNicely(node, 0)
@@ -228,5 +227,20 @@ class ArnoldC {
 
 object Arnold extends ArnoldC {
   def main(args: Array[String]): Unit = {
+    //ITS SHOWTIME
+     // HEY CHRISTMAS_TREE 'varr
+     // YOU SET US UP 123
+     // TALK TO THE HAND 'varr
+     // YOU HAVE BEEN TERMINATED
+
+    ITS SHOWTIME
+      HEY CHRISTMAS_TREE 'a
+      YOU SET US UP 22
+      GET TO THE CHOPPER 'a
+      HERE IS MY INVITATION 123
+      GET UP 1
+      ENOUGH TALK
+      TALK TO THE HAND 'a
+      YOU HAVE BEEN TERMINATED
   }
 }

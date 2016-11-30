@@ -6,7 +6,7 @@ import org.scalatest.FunSpec
   */
 class IntegrationTests extends FunSpec {
 
-  describe("can we print") {
+  describe("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO") {
     object eval_print extends ArnoldC {
       def run(): Unit = {
 

@@ -41,9 +41,6 @@ class Evaluate extends program_stack {
       case "return" => {
         return returnto(node, funcObject)
       }
-      case "setinitialvalue" => {
-        setinitialvalue(node, funcObject)
-      }
       case "if" => {
         ifcase(node, funcObject)
       }
@@ -128,9 +125,6 @@ class Evaluate extends program_stack {
     else {
       return variable
     }
-  }
-
-  def setinitialvalue(node: Node, funcObject: FuncInfo): Unit = {
   }
 
   //The conditional as the nodeChildren(0) will only have one of the following values:
@@ -261,7 +255,11 @@ class Evaluate extends program_stack {
   }
 
   def declareint(node: Node, funcObject: FuncInfo): Unit = {
-
+    if (isInt(node.nodeChildren(1).nodeChildren(0).identification))
+      setIntHelper(node.nodeChildren(0).identification, node.nodeChildren(1).nodeChildren(0).identification.toInt, funcObject)
+    else
+      setBooleanHelper(node.nodeChildren(0).identification, node.nodeChildren(1).nodeChildren(0).identification.toBoolean, funcObject)
+    recur(node.nodeChildren(2), funcObject)
   }
 
   def beginmain(node: Node, funcObject: FuncInfo): Unit = {
