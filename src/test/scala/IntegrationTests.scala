@@ -9,11 +9,12 @@ class IntegrationTests extends FunSpec {
   describe("can we print") {
     object eval_print extends ArnoldC {
       def run(): Unit = {
-        println("Something should print here")
+
+        System.out.println("Something should print here")
         ITS SHOWTIME
         TALK TO THE HAND "hello world"
         YOU HAVE BEEN TERMINATED;
-        println("Something should have printed above")
+        System.out.println("Something should have printed above")
       }
     }
     eval_print.run()
