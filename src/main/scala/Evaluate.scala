@@ -3,6 +3,7 @@
   */
 package com.example.assign5
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.runtime.Nothing$
 import scala.util.control.NonFatal
 
 trait program_stack {
@@ -269,11 +270,13 @@ class Evaluate extends program_stack {
 
   def printto(node: Node, funcObject: FuncInfo): Unit = {
     var variable = node.nodeChildren(0).identification
-    if(getIntFromVar(variable, funcObject) != null) {
-      println(getIntFromVar(variable, funcObject))
+    var maybeIntNone = getIntFromVar(variable, funcObject)
+    var maybeBoolNone = getBoolFromVar(variable, funcObject)
+    if(maybeIntNone.nonEmpty) {
+      println(getIntFromVar(variable, funcObject).get)
     }
-    else if(getBoolFromVar(variable, funcObject) != null){
-      println(getBoolFromVar(variable, funcObject))
+    else if(maybeBoolNone.nonEmpty){
+      println(getBoolFromVar(variable, funcObject).get)
     }
     else {
       println(variable)
@@ -321,8 +324,8 @@ class Evaluate extends program_stack {
       while(pos < expression.length) {
         var indexElement = expression(pos).identification
         if(curOpSet contains indexElement) {
-          var a = getIntFromVar(expression(pos-1).identification, funcObject)
-          var b = getIntFromVar(expression(pos+1).identification, funcObject)
+          var a = getIntFromVar(expression(pos-1).identification, funcObject).get
+          var b = getIntFromVar(expression(pos+1).identification, funcObject).get
           indexElement match {
             case "plus" => {
               expression(pos).identification= a+b+""
@@ -345,7 +348,7 @@ class Evaluate extends program_stack {
         pos+=1
       }
     }
-    return getIntFromVar(expression(0).identification, funcObject)
+    return getIntFromVar(expression(0).identification, funcObject).get
   }
 
   def setvalueBool(node: Node, funcObject: FuncInfo): Boolean = {
@@ -374,40 +377,40 @@ class Evaluate extends program_stack {
         if(curOpSet contains indexElement) {
           indexElement match {
             case "plus" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject)
-              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
               expression(pos).identification= a+b+""
               expression.remove(pos+1)
               expression.remove(pos-1)
               pos-=1
             }
             case "minus" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject)
-              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
               expression(pos).identification= a-b+""
               expression.remove(pos+1)
               expression.remove(pos-1)
               pos-=1
             }
             case "multiply" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject)
-              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
               expression(pos).identification= a*b+""
               expression.remove(pos+1)
               expression.remove(pos-1)
               pos-=1
             }
             case "divide" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject)
-              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
               expression(pos).identification= a/b+""
               expression.remove(pos+1)
               expression.remove(pos-1)
               pos-=1
             }
             case "greaterthan" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject)
-              var b = getIntFromVar(expression(pos+1).identification, funcObject)
+              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
               expression(pos).identification= (a > b) + ""
               expression.remove(pos+1)
               expression.remove(pos-1)
@@ -418,8 +421,8 @@ class Evaluate extends program_stack {
               if(numericalEqualsFlag) {
                 var a = getIntFromVar(expression(pos-1).identification, funcObject)
                 var b = getIntFromVar(expression(pos+1).identification, funcObject)
-                if(a != null && b != null) {
-                  expression(pos).identification= (a == b) + ""
+                if(!a.nonEmpty && !b.nonEmpty) {
+                  expression(pos).identification= (a.get == b.get) + ""
                   expression.remove(pos+1)
                   expression.remove(pos-1)
                   pos-=1
@@ -428,8 +431,8 @@ class Evaluate extends program_stack {
               else {
                 var a = getBoolFromVar(expression(pos-1).identification, funcObject)
                 var b = getBoolFromVar(expression(pos+1).identification, funcObject)
-                if(a != null && b != null) {
-                  expression(pos).identification= (a == b) + ""
+                if(!a.nonEmpty && !b.nonEmpty) {
+                  expression(pos).identification= (a.get == b.get) + ""
                   expression.remove(pos+1)
                   expression.remove(pos-1)
                   pos-=1
@@ -437,16 +440,16 @@ class Evaluate extends program_stack {
               }
             }
             case "and" => {
-              var a = getBoolFromVar(expression(pos-1).identification, funcObject)
-              var b = getBoolFromVar(expression(pos+1).identification, funcObject)
+              var a = getBoolFromVar(expression(pos-1).identification, funcObject).get
+              var b = getBoolFromVar(expression(pos+1).identification, funcObject).get
               expression(pos).identification= (a && b) + ""
               expression.remove(pos+1)
               expression.remove(pos-1)
               pos-=1
             }
             case "or" => {
-              var a = getBoolFromVar(expression(pos-1).identification, funcObject)
-              var b = getBoolFromVar(expression(pos+1).identification, funcObject)
+              var a = getBoolFromVar(expression(pos-1).identification, funcObject).get
+              var b = getBoolFromVar(expression(pos+1).identification, funcObject).get
               expression(pos).identification= (a || b) + ""
               expression.remove(pos+1)
               expression.remove(pos-1)
@@ -462,49 +465,48 @@ class Evaluate extends program_stack {
         pos+=1
       }
     }
-    return getBoolFromVar(expression(0).identification, funcObject)
+    return getBoolFromVar(expression(0).identification, funcObject).get
   }
 
-  def getIntFromVar(variable:String, funcObject: FuncInfo): Int = {
+  def getIntFromVar(variable:String, funcObject: FuncInfo): Option[Int] = {
     try {
       //Check function ints
       if(funcObject.function_int.contains(variable)) {
-        return funcObject.function_int(variable)
+        return Option(funcObject.function_int(variable))
       }
       //Check program ints
       else if(program_int.contains(variable)) {
-        return program_int(variable)
+        return Option(program_int(variable))
       }
       //case for ints and booleans and strings
       else {
-        return variable.toInt
+        return Option(variable.toInt)
       }
     }
     catch {
-      case NonFatal(t) => return null
+      case NonFatal(t) => return None
     }
-    return null
+    return None
   }
 
-  def getBoolFromVar(variable:String, funcObject: FuncInfo): Boolean = {
+  def getBoolFromVar(variable:String, funcObject: FuncInfo): Option[Boolean] = {
     try {
       //Check function ints
       if(funcObject.function_bool.contains(variable)) {
-        return funcObject.function_bool(variable)
+        return Option(funcObject.function_bool(variable))
       }
       //Check program ints
       else if(program_bool.contains(variable)) {
-        return program_bool(variable)
+        return Option(program_bool(variable))
       }
       //case for ints and booleans and strings
       else {
-        return variable.toBoolean
+        return Option(variable.toBoolean)
       }
     }
     catch {
-      case NonFatal(t) => return null
-    }
-    return null
+      case NonFatal(t) => return None    }
+    return None
   }
 
   def isBoolean(string: String): Boolean = {
