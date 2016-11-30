@@ -351,27 +351,31 @@ class Evaluate extends program_stack {
     var operationsArray: ListBuffer[String] = new ListBuffer[String]
     operationsArray += ("multiply divide")
     operationsArray += ("plus minus")
-    var expression = (node.nodeChildren).clone()
+    //var expression = (node.nodeChildren).clone()
+    var expression:ArrayBuffer[String] = new ArrayBuffer[String]
+    for(child <- node.nodeChildren){
+      expression+= child.identification
+    }
     while (expression.length > 1) {
       var pos: Int = 0
       var curOpSet: Set[String] = operationsArray.remove(0).split(" ").toSet
       while (pos < expression.length) {
-        var indexElement = expression(pos).identification
+        var indexElement = expression(pos)
         if (curOpSet contains indexElement) {
-          var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
-          var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
+          var a = getIntFromVar(expression(pos - 1), funcObject).get
+          var b = getIntFromVar(expression(pos + 1), funcObject).get
           indexElement match {
             case "plus" => {
-              expression(pos).identification = a + b + ""
+              expression(pos) = a + b + ""
             }
             case "minus" => {
-              expression(pos).identification = a - b + ""
+              expression(pos) = a - b + ""
             }
             case "multiply" => {
-              expression(pos).identification = a * b + ""
+              expression(pos) = a * b + ""
             }
             case "divide" => {
-              expression(pos).identification = a / b + ""
+              expression(pos) = a / b + ""
             }
             case _ => throw new Exception("invalid operation")
           }
@@ -383,7 +387,7 @@ class Evaluate extends program_stack {
       }
     }
     // is this the problem?
-    return getIntFromVar(expression(0).identification, funcObject).get
+    return getIntFromVar(expression(0), funcObject).get
   }
 
   def setvalueBool(node: Node, funcObject: FuncInfo): Boolean = {
@@ -403,50 +407,53 @@ class Evaluate extends program_stack {
     //The first time we want to check for number equality. We'll set this to false after checking equals the first time
     var numericalEqualsFlag: Boolean = true
 
-    var expression = (node.nodeChildren).clone()
+    var expression:ArrayBuffer[String] = new ArrayBuffer[String]
+    for(child <- node.nodeChildren) {
+      expression += child.identification
+    }
     while (expression.length > 1) {
       var pos: Int = 0
       var curOpSet: Set[String] = operationsArray.remove(0).split(" ").toSet
       while (pos < expression.length) {
-        var indexElement = expression(pos).identification
+        var indexElement = expression(pos)
         if (curOpSet contains indexElement) {
           indexElement match {
             case "plus" => {
-              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
-              expression(pos).identification = a + b + ""
+              var a = getIntFromVar(expression(pos - 1), funcObject).get
+              var b = getIntFromVar(expression(pos + 1), funcObject).get
+              expression(pos) = a + b + ""
               expression.remove(pos + 1)
               expression.remove(pos - 1)
               pos -= 1
             }
             case "minus" => {
-              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
-              expression(pos).identification = a - b + ""
+              var a = getIntFromVar(expression(pos - 1), funcObject).get
+              var b = getIntFromVar(expression(pos + 1), funcObject).get
+              expression(pos) = a - b + ""
               expression.remove(pos + 1)
               expression.remove(pos - 1)
               pos -= 1
             }
             case "multiply" => {
-              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
-              expression(pos).identification = a * b + ""
+              var a = getIntFromVar(expression(pos - 1), funcObject).get
+              var b = getIntFromVar(expression(pos + 1), funcObject).get
+              expression(pos) = a * b + ""
               expression.remove(pos + 1)
               expression.remove(pos - 1)
               pos -= 1
             }
             case "divide" => {
-              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
-              expression(pos).identification = a / b + ""
+              var a = getIntFromVar(expression(pos - 1), funcObject).get
+              var b = getIntFromVar(expression(pos + 1), funcObject).get
+              expression(pos) = a / b + ""
               expression.remove(pos + 1)
               expression.remove(pos - 1)
               pos -= 1
             }
             case "greaterthan" => {
-              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
-              expression(pos).identification = (a > b) + ""
+              var a = getIntFromVar(expression(pos - 1), funcObject).get
+              var b = getIntFromVar(expression(pos + 1), funcObject).get
+              expression(pos) = (a > b) + ""
               expression.remove(pos + 1)
               expression.remove(pos - 1)
               pos -= 1
@@ -454,20 +461,20 @@ class Evaluate extends program_stack {
             case "equals" => {
               //We have numbers on both sides
               if (numericalEqualsFlag) {
-                var a = getIntFromVar(expression(pos - 1).identification, funcObject)
-                var b = getIntFromVar(expression(pos + 1).identification, funcObject)
+                var a = getIntFromVar(expression(pos - 1), funcObject)
+                var b = getIntFromVar(expression(pos + 1), funcObject)
                 if (!a.nonEmpty && !b.nonEmpty) {
-                  expression(pos).identification = (a.get == b.get) + ""
+                  expression(pos) = (a.get == b.get) + ""
                   expression.remove(pos + 1)
                   expression.remove(pos - 1)
                   pos -= 1
                 }
               }
               else {
-                var a = getBoolFromVar(expression(pos - 1).identification, funcObject)
-                var b = getBoolFromVar(expression(pos + 1).identification, funcObject)
+                var a = getBoolFromVar(expression(pos - 1), funcObject)
+                var b = getBoolFromVar(expression(pos + 1), funcObject)
                 if (!a.nonEmpty && !b.nonEmpty) {
-                  expression(pos).identification = (a.get == b.get) + ""
+                  expression(pos) = (a.get == b.get) + ""
                   expression.remove(pos + 1)
                   expression.remove(pos - 1)
                   pos -= 1
@@ -475,17 +482,17 @@ class Evaluate extends program_stack {
               }
             }
             case "and" => {
-              var a = getBoolFromVar(expression(pos - 1).identification, funcObject).get
-              var b = getBoolFromVar(expression(pos + 1).identification, funcObject).get
-              expression(pos).identification = (a && b) + ""
+              var a = getBoolFromVar(expression(pos - 1), funcObject).get
+              var b = getBoolFromVar(expression(pos + 1), funcObject).get
+              expression(pos) = (a && b) + ""
               expression.remove(pos + 1)
               expression.remove(pos - 1)
               pos -= 1
             }
             case "or" => {
-              var a = getBoolFromVar(expression(pos - 1).identification, funcObject).get
-              var b = getBoolFromVar(expression(pos + 1).identification, funcObject).get
-              expression(pos).identification = (a || b) + ""
+              var a = getBoolFromVar(expression(pos - 1), funcObject).get
+              var b = getBoolFromVar(expression(pos + 1), funcObject).get
+              expression(pos) = (a || b) + ""
               expression.remove(pos + 1)
               expression.remove(pos - 1)
               pos -= 1
@@ -500,7 +507,7 @@ class Evaluate extends program_stack {
         pos += 1
       }
     }
-    return getBoolFromVar(expression(0).identification, funcObject).get
+    return getBoolFromVar(expression(0), funcObject).get
   }
 
   def getIntFromVar(variable: String, funcObject: FuncInfo): Option[Int] = {

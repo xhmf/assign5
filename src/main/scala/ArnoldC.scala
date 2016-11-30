@@ -230,7 +230,7 @@ class ArnoldC {
 
 object Arnold extends ArnoldC {
   def main(args: Array[String]): Unit = {
-    /*ITS SHOWTIME
+    ITS SHOWTIME
       HEY CHRISTMAS_TREE 'loop
       YOU SET US UP NO PROBLEMO
       HEY CHRISTMAS_TREE 'counter
@@ -248,25 +248,25 @@ object Arnold extends ArnoldC {
           LET OFF SOME STEAM_BENNET 'counter
           ENOUGH TALK
       THATS CHILL
-    YOU HAVE BEEN TERMINATED*/
+    YOU HAVE BEEN TERMINATED
 
-    ITS SHOWTIME
-      HEY CHRISTMAS_TREE 'varrr
-      YOU SET US UP 22
-      GET TO THE CHOPPER 'varrr
-      HERE IS MY INVITATION 123
-      GET UP 1
-      ENOUGH TALK
-      GET TO THE CHOPPER 'varrr
-      HERE IS MY INVITATION 'varrr
-      GET UP 1
-      ENOUGH TALK
-    GET TO THE CHOPPER 'varrr
-    HERE IS MY INVITATION 'varrr
-    GET UP 1
-    ENOUGH TALK
-      TALK TO THE HAND 'varrr
-      YOU HAVE BEEN TERMINATED
+//    ITS SHOWTIME
+//      HEY CHRISTMAS_TREE 'varrr
+//      YOU SET US UP 22
+//      GET TO THE CHOPPER 'varrr
+//      HERE IS MY INVITATION 123
+//      GET UP 1
+//      ENOUGH TALK
+//      GET TO THE CHOPPER 'varrr
+//      HERE IS MY INVITATION 'varrr
+//      GET UP 1
+//      ENOUGH TALK
+//    GET TO THE CHOPPER 'varrr
+//    HERE IS MY INVITATION 'varrr
+//    GET UP 1
+//    ENOUGH TALK
+//      TALK TO THE HAND 'varrr
+//      YOU HAVE BEEN TERMINATED
 
 
 //          ITS SHOWTIME
