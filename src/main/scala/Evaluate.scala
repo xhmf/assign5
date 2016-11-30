@@ -2,6 +2,7 @@
   * Created by lyee on 11/27/16.
   */
 package com.example.assign5
+
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.runtime.Nothing$
 import scala.util.control.NonFatal
@@ -9,25 +10,26 @@ import scala.util.control.NonFatal
 trait program_stack {
   // holds the variable scope
   val program_bool = scala.collection.mutable.HashMap.empty[String, Boolean]
-  
+
   //holds the function scope
   val program_int = scala.collection.mutable.HashMap.empty[String, Int]
 
   // holds the function object
   val function_evaluate = scala.collection.mutable.HashMap.empty[String, FuncInfo]
 }
-abstract class FuncInfo{
-  var name:String
-  var body:Node
+
+abstract class FuncInfo {
+  var name: String
+  var body: Node
   val function_bool = scala.collection.mutable.HashMap.empty[String, Boolean]
   val function_int = scala.collection.mutable.HashMap.empty[String, Int]
-  var variables:ArrayBuffer[String]
-  var nonvoid:Boolean
+  var variables: ArrayBuffer[String]
+  var nonvoid: Boolean
 
 }
 
 class Evaluate extends program_stack {
-  def isDigit(char: Char):Boolean = {
+  def isDigit(char: Char): Boolean = {
     return (char + "").forall(_.isDigit) || (char == '.')
   }
 
@@ -95,6 +97,9 @@ class Evaluate extends program_stack {
       case "endmain" => {
         println()
       }
+      case "endif" => {
+        println()
+      }
       //Uhoh!! Should never reach here!!
       case _ => {
         //All leaf nodes should be caught by one of the other methods :PPPP
@@ -106,19 +111,19 @@ class Evaluate extends program_stack {
 
   def returnto(node: Node, funcObject: FuncInfo): String = {
     var variable = node.nodeChildren(0).identification
-    if(funcObject.function_bool.contains(variable)) {
+    if (funcObject.function_bool.contains(variable)) {
       return funcObject.function_bool(variable).toString
     }
     //Check function ints
-    else if(funcObject.function_int.contains(variable)) {
+    else if (funcObject.function_int.contains(variable)) {
       return funcObject.function_int(variable).toString
     }
     //Check program bools
-    else if(program_bool.contains(variable)) {
+    else if (program_bool.contains(variable)) {
       return program_bool(variable).toString
     }
     //Check program ints
-    else if(program_int.contains(variable)) {
+    else if (program_int.contains(variable)) {
       return program_int(variable).toString
     }
     //case for ints and booleans and strings
@@ -131,13 +136,31 @@ class Evaluate extends program_stack {
   //"true", "false", or a variable
   //Also check number of children since there might be an else case here
   def ifcase(node: Node, funcObject: FuncInfo): Unit = {
-
+    val cond = node.nodeChildren(0).identification
+    val numNodes = node.nodeChildren.size
+    getBoolFromVar(cond, funcObject) match {
+      case Some(bool) => if (bool) {
+        recur(node.nodeChildren(1), funcObject)
+      } else if (numNodes == 4) {
+        recur(node.nodeChildren(2), funcObject)
+      }
+      case None => println("ERROR") // probably throw error
+    }
   }
+
   //The conditional as the nodeChildren(0) will only have one of the following values:
   //"true", "false", or a variable
   def whilecase(node: Node, funcObject: FuncInfo): Unit = {
-
+    val condString = node.nodeChildren(0).identification
+    var cond = true
+    while (cond) {
+      getBoolFromVar(condString, funcObject) match {
+        case Some(true) => recur(node.nodeChildren(1), funcObject) // Only continue if condition is true
+        case _ => cond = false
+      }
+    }
   }
+
   //ASSUMING methodname, variable node, voidnode, function node, rest of tree
   def declaremethod(node: Node, funcObject: FuncInfo): Unit = {
     // the function body is keyed on the name of the function
@@ -149,11 +172,11 @@ class Evaluate extends program_stack {
       override var nonvoid: Boolean = false
     }
 
-    if(node.nodeChildren(2).identification.equals("nonvoidmethod")){
+    if (node.nodeChildren(2).identification.equals("nonvoidmethod")) {
       func_object.nonvoid = true
     }
 
-    for(var_name <- node.nodeChildren(1).nodeChildren) {
+    for (var_name <- node.nodeChildren(1).nodeChildren) {
       func_object.variables += var_name.identification
     }
     function_evaluate(node.nodeChildren(0).identification) = func_object
@@ -161,39 +184,40 @@ class Evaluate extends program_stack {
     // now we evaluate the rest of the tree
     recur(node.nodeChildren(4), funcObject)
   }
+
   //ASSUMING: method name, method variable node, rest of tree
   // We need to have either a separate recur that can return someting or change recur to return
   def callmethod(node: Node, funcObject: FuncInfo): Unit = {
     val currfuncObject = function_evaluate(node.nodeChildren(0).identification)
     var arguments = node.nodeChildren(1)
-    for(var_index <- 0 to currfuncObject.variables.length){
+    for (var_index <- 0 to currfuncObject.variables.length) {
       var argument = arguments.nodeChildren(var_index).identification
 
       //In the case of vars, set the argument value to the value of the variable
       //check each variable scope for the variable
 
       //Check function bools
-      if(funcObject.function_bool.contains(argument)) {
+      if (funcObject.function_bool.contains(argument)) {
         currfuncObject.function_bool(currfuncObject.variables(var_index)) = funcObject.function_bool(argument)
       }
       //Check function ints
-      else if(funcObject.function_int.contains(argument)) {
+      else if (funcObject.function_int.contains(argument)) {
         currfuncObject.function_int(currfuncObject.variables(var_index)) = funcObject.function_int(argument)
       }
       //Check program bools
-      else if(program_bool.contains(argument)) {
+      else if (program_bool.contains(argument)) {
         currfuncObject.function_bool(currfuncObject.variables(var_index)) = program_bool(argument)
       }
       //Check program ints
-      else if(program_int.contains(argument)) {
+      else if (program_int.contains(argument)) {
         currfuncObject.function_int(currfuncObject.variables(var_index)) = program_int(argument)
       }
       //case for ints
-      else if(isInt(argument)){
+      else if (isInt(argument)) {
         currfuncObject.function_int(currfuncObject.variables(var_index)) = argument.toInt
       }
       //case for booleans
-      else if(isBoolean(argument)) {
+      else if (isBoolean(argument)) {
         currfuncObject.function_bool(currfuncObject.variables(var_index)) = argument.toBoolean
       }
     }
@@ -206,34 +230,34 @@ class Evaluate extends program_stack {
     var variableToAssign = node.nodeChildren(0).identification
     val currfuncObject = function_evaluate(node.nodeChildren(1).identification)
     val arguments = node.nodeChildren(2)
-    for(var_index <- 0 to currfuncObject.variables.length){
+    for (var_index <- 0 to currfuncObject.variables.length) {
       val argument = arguments.nodeChildren(var_index).identification
 
       //In the case of vars, set the argument value to the value of the variable
       //check each variable scope for the variable
 
       //Check function bools
-      if(funcObject.function_bool.contains(argument)) {
+      if (funcObject.function_bool.contains(argument)) {
         currfuncObject.function_bool(currfuncObject.variables(var_index)) = funcObject.function_bool(argument)
       }
       //Check function ints
-      else if(funcObject.function_int.contains(argument)) {
+      else if (funcObject.function_int.contains(argument)) {
         currfuncObject.function_int(currfuncObject.variables(var_index)) = funcObject.function_int(argument)
       }
       //Check program bools
-      else if(program_bool.contains(argument)) {
+      else if (program_bool.contains(argument)) {
         currfuncObject.function_bool(currfuncObject.variables(var_index)) = program_bool(argument)
       }
       //Check program ints
-      else if(program_int.contains(argument)) {
+      else if (program_int.contains(argument)) {
         currfuncObject.function_int(currfuncObject.variables(var_index)) = program_int(argument)
       }
       //case for ints
-      else if(isInt(argument)){
+      else if (isInt(argument)) {
         currfuncObject.function_int(currfuncObject.variables(var_index)) = argument.toInt
       }
       //case for booleans
-      else if(isBoolean(argument)) {
+      else if (isBoolean(argument)) {
         currfuncObject.function_bool(currfuncObject.variables(var_index)) = argument.toBoolean
       }
     }
@@ -241,11 +265,11 @@ class Evaluate extends program_stack {
     val returnResult = recur(currfuncObject.body, currfuncObject)
 
     //Check to see if the variable which we're assigning exists
-    if(funcObject.function_bool.contains(variableToAssign)) {
+    if (funcObject.function_bool.contains(variableToAssign)) {
 
     }
     //TODO: Debug this if functions break?
-    if(isInt(returnResult)) {
+    if (isInt(returnResult)) {
       setIntHelper(variableToAssign, returnResult.toInt, funcObject)
     }
     else {
@@ -270,10 +294,10 @@ class Evaluate extends program_stack {
     var variable = node.nodeChildren(0).identification
     var maybeIntNone = getIntFromVar(variable, funcObject)
     var maybeBoolNone = getBoolFromVar(variable, funcObject)
-    if(maybeIntNone.nonEmpty) {
+    if (maybeIntNone.nonEmpty) {
       println(getIntFromVar(variable, funcObject).get)
     }
-    else if(maybeBoolNone.nonEmpty){
+    else if (maybeBoolNone.nonEmpty) {
       println(getBoolFromVar(variable, funcObject).get)
     }
     else {
@@ -285,19 +309,19 @@ class Evaluate extends program_stack {
   def assignvariable(node: Node, funcObject: FuncInfo): Unit = {
     val name = node.nodeChildren(0).identification
     //Check to see if this operation is performed on an int or a bool
-    var willReturnInt:Boolean = true
-    for(child <- node.nodeChildren(1).nodeChildren) {
+    var willReturnInt: Boolean = true
+    for (child <- node.nodeChildren(1).nodeChildren) {
       //For every node inside of the setvalue function, if we run into a case which is either:
       //Not an int, not an op, or does not exist as a variable
       //we automatically know that the result of setvalue will be a boolean.
-      if( !(isInt(child.identification)
+      if (!(isInt(child.identification)
         || isOp(child.identification)
         || funcObject.function_int.contains(child.identification)
         || program_int.contains(child.identification))) {
         willReturnInt = false
       }
     }
-    if(willReturnInt) {
+    if (willReturnInt) {
       val result = setvalueInt(node.nodeChildren(1), funcObject)
       setIntHelper(name, result, funcObject)
     }
@@ -312,38 +336,38 @@ class Evaluate extends program_stack {
     if (node.nodeChildren.size == 0) {
       throw new Exception("YOU TRIED TO SET A VALUE TO NOTHING")
     }
-    var operationsArray:ListBuffer[String] = new ListBuffer[String]
+    var operationsArray: ListBuffer[String] = new ListBuffer[String]
     operationsArray += ("multiply divide")
     operationsArray += ("plus minus")
     var expression = node.nodeChildren
-    while(expression.length > 1) {
-      var pos:Int = 0
-      var curOpSet:Set[String] = operationsArray.remove(0).split(" ").toSet
-      while(pos < expression.length) {
+    while (expression.length > 1) {
+      var pos: Int = 0
+      var curOpSet: Set[String] = operationsArray.remove(0).split(" ").toSet
+      while (pos < expression.length) {
         var indexElement = expression(pos).identification
-        if(curOpSet contains indexElement) {
-          var a = getIntFromVar(expression(pos-1).identification, funcObject).get
-          var b = getIntFromVar(expression(pos+1).identification, funcObject).get
+        if (curOpSet contains indexElement) {
+          var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
+          var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
           indexElement match {
             case "plus" => {
-              expression(pos).identification= a+b+""
+              expression(pos).identification = a + b + ""
             }
             case "minus" => {
-              expression(pos).identification= a-b+""
+              expression(pos).identification = a - b + ""
             }
             case "multiply" => {
-              expression(pos).identification= a*b+""
+              expression(pos).identification = a * b + ""
             }
             case "divide" => {
-              expression(pos).identification= a/b+""
+              expression(pos).identification = a / b + ""
             }
             case _ => throw new Exception("invalid operation")
           }
-          expression.remove(pos+1)
-          expression.remove(pos-1)
-          pos-=1
+          expression.remove(pos + 1)
+          expression.remove(pos - 1)
+          pos -= 1
         }
-        pos+=1
+        pos += 1
       }
     }
     return getIntFromVar(expression(0).identification, funcObject).get
@@ -353,7 +377,7 @@ class Evaluate extends program_stack {
     if (node.nodeChildren.size == 0) {
       throw new Exception("YOU TRIED TO SET A VALUE TO NOTHING")
     }
-    var operationsArray:ListBuffer[String] = new ListBuffer[String]
+    var operationsArray: ListBuffer[String] = new ListBuffer[String]
     operationsArray += ("multiply divide")
     operationsArray += ("plus minus")
     operationsArray += ("greaterthan")
@@ -364,116 +388,116 @@ class Evaluate extends program_stack {
     //Check for boolean equality
     operationsArray += ("equals")
     //The first time we want to check for number equality. We'll set this to false after checking equals the first time
-    var numericalEqualsFlag:Boolean = true
+    var numericalEqualsFlag: Boolean = true
 
     var expression = node.nodeChildren
-    while(expression.length > 1) {
-      var pos:Int = 0
-      var curOpSet:Set[String] = operationsArray.remove(0).split(" ").toSet
-      while(pos < expression.length) {
+    while (expression.length > 1) {
+      var pos: Int = 0
+      var curOpSet: Set[String] = operationsArray.remove(0).split(" ").toSet
+      while (pos < expression.length) {
         var indexElement = expression(pos).identification
-        if(curOpSet contains indexElement) {
+        if (curOpSet contains indexElement) {
           indexElement match {
             case "plus" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
-              expression(pos).identification= a+b+""
-              expression.remove(pos+1)
-              expression.remove(pos-1)
-              pos-=1
+              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
+              expression(pos).identification = a + b + ""
+              expression.remove(pos + 1)
+              expression.remove(pos - 1)
+              pos -= 1
             }
             case "minus" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
-              expression(pos).identification= a-b+""
-              expression.remove(pos+1)
-              expression.remove(pos-1)
-              pos-=1
+              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
+              expression(pos).identification = a - b + ""
+              expression.remove(pos + 1)
+              expression.remove(pos - 1)
+              pos -= 1
             }
             case "multiply" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
-              expression(pos).identification= a*b+""
-              expression.remove(pos+1)
-              expression.remove(pos-1)
-              pos-=1
+              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
+              expression(pos).identification = a * b + ""
+              expression.remove(pos + 1)
+              expression.remove(pos - 1)
+              pos -= 1
             }
             case "divide" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
-              expression(pos).identification= a/b+""
-              expression.remove(pos+1)
-              expression.remove(pos-1)
-              pos-=1
+              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
+              expression(pos).identification = a / b + ""
+              expression.remove(pos + 1)
+              expression.remove(pos - 1)
+              pos -= 1
             }
             case "greaterthan" => {
-              var a = getIntFromVar(expression(pos-1).identification, funcObject).get
-              var b = getIntFromVar(expression(pos+1).identification, funcObject).get
-              expression(pos).identification= (a > b) + ""
-              expression.remove(pos+1)
-              expression.remove(pos-1)
-              pos-=1
+              var a = getIntFromVar(expression(pos - 1).identification, funcObject).get
+              var b = getIntFromVar(expression(pos + 1).identification, funcObject).get
+              expression(pos).identification = (a > b) + ""
+              expression.remove(pos + 1)
+              expression.remove(pos - 1)
+              pos -= 1
             }
             case "equals" => {
               //We have numbers on both sides
-              if(numericalEqualsFlag) {
-                var a = getIntFromVar(expression(pos-1).identification, funcObject)
-                var b = getIntFromVar(expression(pos+1).identification, funcObject)
-                if(!a.nonEmpty && !b.nonEmpty) {
-                  expression(pos).identification= (a.get == b.get) + ""
-                  expression.remove(pos+1)
-                  expression.remove(pos-1)
-                  pos-=1
+              if (numericalEqualsFlag) {
+                var a = getIntFromVar(expression(pos - 1).identification, funcObject)
+                var b = getIntFromVar(expression(pos + 1).identification, funcObject)
+                if (!a.nonEmpty && !b.nonEmpty) {
+                  expression(pos).identification = (a.get == b.get) + ""
+                  expression.remove(pos + 1)
+                  expression.remove(pos - 1)
+                  pos -= 1
                 }
               }
               else {
-                var a = getBoolFromVar(expression(pos-1).identification, funcObject)
-                var b = getBoolFromVar(expression(pos+1).identification, funcObject)
-                if(!a.nonEmpty && !b.nonEmpty) {
-                  expression(pos).identification= (a.get == b.get) + ""
-                  expression.remove(pos+1)
-                  expression.remove(pos-1)
-                  pos-=1
+                var a = getBoolFromVar(expression(pos - 1).identification, funcObject)
+                var b = getBoolFromVar(expression(pos + 1).identification, funcObject)
+                if (!a.nonEmpty && !b.nonEmpty) {
+                  expression(pos).identification = (a.get == b.get) + ""
+                  expression.remove(pos + 1)
+                  expression.remove(pos - 1)
+                  pos -= 1
                 }
               }
             }
             case "and" => {
-              var a = getBoolFromVar(expression(pos-1).identification, funcObject).get
-              var b = getBoolFromVar(expression(pos+1).identification, funcObject).get
-              expression(pos).identification= (a && b) + ""
-              expression.remove(pos+1)
-              expression.remove(pos-1)
-              pos-=1
+              var a = getBoolFromVar(expression(pos - 1).identification, funcObject).get
+              var b = getBoolFromVar(expression(pos + 1).identification, funcObject).get
+              expression(pos).identification = (a && b) + ""
+              expression.remove(pos + 1)
+              expression.remove(pos - 1)
+              pos -= 1
             }
             case "or" => {
-              var a = getBoolFromVar(expression(pos-1).identification, funcObject).get
-              var b = getBoolFromVar(expression(pos+1).identification, funcObject).get
-              expression(pos).identification= (a || b) + ""
-              expression.remove(pos+1)
-              expression.remove(pos-1)
-              pos-=1
+              var a = getBoolFromVar(expression(pos - 1).identification, funcObject).get
+              var b = getBoolFromVar(expression(pos + 1).identification, funcObject).get
+              expression(pos).identification = (a || b) + ""
+              expression.remove(pos + 1)
+              expression.remove(pos - 1)
+              pos -= 1
             }
             case _ => throw new Exception("invalid operation")
           }
           //After we hit equality check the first time, set the flag to false
-          if(curOpSet.contains("equals")) {
+          if (curOpSet.contains("equals")) {
             numericalEqualsFlag = false
           }
         }
-        pos+=1
+        pos += 1
       }
     }
     return getBoolFromVar(expression(0).identification, funcObject).get
   }
 
-  def getIntFromVar(variable:String, funcObject: FuncInfo): Option[Int] = {
+  def getIntFromVar(variable: String, funcObject: FuncInfo): Option[Int] = {
     try {
       //Check function ints
-      if(funcObject.function_int.contains(variable)) {
+      if (funcObject.function_int.contains(variable)) {
         return Option(funcObject.function_int(variable))
       }
       //Check program ints
-      else if(program_int.contains(variable)) {
+      else if (program_int.contains(variable)) {
         return Option(program_int(variable))
       }
       //case for ints and booleans and strings
@@ -487,14 +511,17 @@ class Evaluate extends program_stack {
     return None
   }
 
-  def getBoolFromVar(variable:String, funcObject: FuncInfo): Option[Boolean] = {
+  def getBoolFromVar(variable: String, funcObject: FuncInfo): Option[Boolean] = {
+    if (variable == "true" || variable == "false") {
+      return Option(variable.toBoolean)
+    }
     try {
       //Check function ints
-      if(funcObject.function_bool.contains(variable)) {
+      if (funcObject.function_bool.contains(variable)) {
         return Option(funcObject.function_bool(variable))
       }
       //Check program ints
-      else if(program_bool.contains(variable)) {
+      else if (program_bool.contains(variable)) {
         return Option(program_bool(variable))
       }
       //case for ints and booleans and strings
@@ -503,32 +530,34 @@ class Evaluate extends program_stack {
       }
     }
     catch {
-      case NonFatal(t) => return None    }
+      case NonFatal(t) => return None
+    }
     return None
   }
 
   def isBoolean(string: String): Boolean = {
-    return  string.equals("true") || string.equals("false")
+    return string.equals("true") || string.equals("false")
   }
+
   def isInt(string: String): Boolean = {
-    return  string.charAt(0).isDigit || string.charAt(0) =='-'
+    return string.charAt(0).isDigit || string.charAt(0) == '-'
   }
 
   def isOp(string: String): Boolean = {
-    return string.equals("plus") || string.equals("minus") || string.equals("multiply") ||  string.equals("divide")
+    return string.equals("plus") || string.equals("minus") || string.equals("multiply") || string.equals("divide")
   }
 
-  def setIntHelper(variable:String, num:Int, funcObject: FuncInfo): Unit = {
+  def setIntHelper(variable: String, num: Int, funcObject: FuncInfo): Unit = {
     //If we are inside a function and the function contains the variable we are referencing
-    if(funcObject.function_int contains variable) {
+    if (funcObject.function_int contains variable) {
       funcObject.function_int(variable) = num
     }
     //If the global scope contains the variable we are referencing
-    else if(program_int contains variable) {
+    else if (program_int contains variable) {
       program_int(variable) = num // Might be an error because reassigning a variable.
     }
     //If we are inside a function scope and the function contains the variable
-    else if(!funcObject.name.equals("")) {
+    else if (!funcObject.name.equals("")) {
       funcObject.function_int += (variable -> num)
     }
     //This means that no variable has been created previously and we are in the global scope
@@ -536,17 +565,18 @@ class Evaluate extends program_stack {
       program_int += (variable -> num)
     }
   }
-  def setBooleanHelper(variable:String, bool:Boolean, funcObject: FuncInfo): Unit = {
+
+  def setBooleanHelper(variable: String, bool: Boolean, funcObject: FuncInfo): Unit = {
     //If we are inside a function and the function contains the variable we are referencing
-    if(funcObject.function_bool contains variable) {
+    if (funcObject.function_bool contains variable) {
       funcObject.function_bool(variable) = bool
     }
     //If the global scope contains the variable we are referencing
-    else if(program_bool contains variable) {
+    else if (program_bool contains variable) {
       program_bool(variable) = bool // Might be an error because reassigning a variable.
     }
     //If we are inside a function scope and the function contains the variable
-    else if(!funcObject.name.equals("")) {
+    else if (!funcObject.name.equals("")) {
       funcObject.function_bool += (variable -> bool)
     }
     //This means that no variable has been created previously and we are in the global scope

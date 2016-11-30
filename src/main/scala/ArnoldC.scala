@@ -241,6 +241,12 @@ object Arnold extends ArnoldC {
       GET UP 1
       ENOUGH TALK
       TALK TO THE HAND 'a
-      YOU HAVE BEEN TERMINATED
+      GET TO THE CHOPPER 'myvar
+        HERE IS MY INVITATION NO PROBLEMO
+      ENOUGH TALK
+      BECAUSE IM GOING TO SAY PLEASE 'myvar
+        TALK TO THE HAND "worked"
+      YOU HAVE NO RESPECT FOR LOGIC
+    YOU HAVE BEEN TERMINATED
   }
 }
