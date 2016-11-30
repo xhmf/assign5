@@ -231,28 +231,22 @@ class ArnoldC {
 object Arnold extends ArnoldC {
   def main(args: Array[String]): Unit = {
     ITS SHOWTIME
-      HEY CHRISTMAS_TREE 'limit
-      YOU SET US UP 10
-    HEY CHRISTMAS_TREE 'index
-      YOU SET US UP 1
-    HEY CHRISTMAS_TREE 'squared
-      YOU SET US UP 1
-    HEY CHRISTMAS_TREE 'loop
+      HEY CHRISTMAS_TREE 'loop
       YOU SET US UP NO PROBLEMO
+      HEY CHRISTMAS_TREE 'counter
+      YOU SET US UP 1
       STICK AROUND 'loop
-    GET TO THE CHOPPER 'squared
-    HERE IS MY INVITATION 'index
-    YOURE FIRED 'index
-    ENOUGH TALK
-      TALK TO THE HAND 'squared
-    GET TO THE CHOPPER 'loop
-    HERE IS MY INVITATION 'limit
-    LET OFF SOME STEAM_BENNET 'index
-      ENOUGH TALK
-      GET TO THE CHOPPER 'index
-    HERE IS MY INVITATION 'index
-    GET UP 1
-    ENOUGH TALK
+        TALK TO THE HAND 'counter
+        GET TO THE CHOPPER 'counter
+          HERE IS MY INVITATION 'counter
+          GET UP 1
+          ENOUGH TALK
+        TALK TO THE HAND "#####################################################################################"
+        TALK TO THE HAND 'counter
+        GET TO THE CHOPPER 'loop
+          HERE IS MY INVITATION 7
+          LET OFF SOME STEAM_BENNET 'counter
+          ENOUGH TALK
       THATS CHILL
     YOU HAVE BEEN TERMINATED
 
